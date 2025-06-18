@@ -1,21 +1,33 @@
 .pokeport-bg {
   background: linear-gradient(135deg, #f8fafc 60%, #ffe0e9 100%);
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  left: 0;
 }
 
 .pokeport-sidebar {
   width: 220px;
+  min-width: 180px;
   background: linear-gradient(135deg, #ef5350 80%, #ffd6d6 100%);
   box-shadow: 2px 0 12px #0001;
   position: sticky;
   top: 0;
+  left: 0;
   height: 100vh;
   z-index: 2;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #eee;
 }
 
-.pokeport-sidebar-title {
-  letter-spacing: 1px;
-  margin: 0;
+.pokeport-sidebar-header {
+  background: #ef5350;
+  color: #fff;
+  padding: 1.5rem 1rem 1rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .pokeport-pokeball {
@@ -23,13 +35,23 @@
   margin-right: 0.4em;
 }
 
+.pokeport-sidebar-content {
+  padding: 1rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
 .pokeport-set-info {
   background: #fff6f6;
 }
 
 .pokeport-main {
-  padding: 2.5rem 0.5rem 2rem 0.5rem;
+  flex: 1;
+  padding: 2.5rem 1rem 1rem 1rem;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .pokeport-main-title {
@@ -82,4 +104,42 @@
 .pokeport-select__value-container {
   padding-left: 12px !important;
   padding-right: 12px !important;
+}
+
+@media (max-width: 767.98px) {
+  .pokeport-bg {
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100vw;
+  }
+  .pokeport-sidebar {
+    width: 100vw;
+    min-width: unset;
+    height: auto;
+    min-height: unset;
+    max-width: 100vw;
+    position: static;
+    box-shadow: none;
+    border-bottom: 1px solid #eee;
+    border-right: none;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0;
+  }
+  .pokeport-sidebar-header {
+    width: 100vw;
+    padding: 1rem 0.5rem 0.5rem 0.5rem;
+    border-bottom: none;
+    border-right: 1px solid #eee;
+  }
+  .pokeport-sidebar-content {
+    padding: 0.5rem;
+    flex: 1 1 auto;
+  }
+  .pokeport-main {
+    padding: 1rem 0.25rem 1rem 0.25rem;
+  }
+  .pokeport-set-info {
+    margin-bottom: 1rem;
+  }
 }
