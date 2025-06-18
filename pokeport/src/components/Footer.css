@@ -1,0 +1,16 @@
+.pk-footer {
+  background: #ef5350;
+  color: white;
+  text-align: center;
+  padding: 1em 0;
+  font-size: 1em;
+  letter-spacing: 0.5px;
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+.pk-footer .pk-pokeball {
+  font-size: 1.2em;
+  margin-right: 0.3em;
+}

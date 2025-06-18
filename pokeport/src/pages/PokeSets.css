@@ -1,0 +1,85 @@
+.pokeport-bg {
+  background: linear-gradient(135deg, #f8fafc 60%, #ffe0e9 100%);
+}
+
+.pokeport-sidebar {
+  width: 220px;
+  background: linear-gradient(135deg, #ef5350 80%, #ffd6d6 100%);
+  box-shadow: 2px 0 12px #0001;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 2;
+  padding: 0;
+}
+
+.pokeport-sidebar-title {
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.pokeport-pokeball {
+  font-size: 1.3em;
+  margin-right: 0.4em;
+}
+
+.pokeport-set-info {
+  background: #fff6f6;
+}
+
+.pokeport-main {
+  padding: 2.5rem 0.5rem 2rem 0.5rem;
+  overflow-y: auto;
+}
+
+.pokeport-main-title {
+  letter-spacing: 1px;
+}
+
+.pokeport-card-img-wrapper {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: #fff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pokeport-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pokeport-card-title {
+  font-size: 0.95em;
+  font-weight: 500;
+  color: #333;
+  word-break: break-word;
+}
+
+/* react-select overrides */
+.pokeport-select__control {
+  border-color: #ef5350 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  min-height: 44px !important;
+}
+.pokeport-select__option--is-selected {
+  background: #ef5350 !important;
+  color: #fff !important;
+}
+.pokeport-select__option--is-focused {
+  background: #ffd6d6 !important;
+  color: #333 !important;
+}
+.pokeport-select__menu {
+  border-radius: 0 !important;
+}
+.pokeport-select__value-container {
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}

@@ -1,0 +1,38 @@
+.pk-navbar {
+  background: #ef5350;
+  color: white;
+  padding: 0.5em 0;
+  box-shadow: 0 2px 8px #0002;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+.pk-navbar-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2em;
+}
+.pk-pokeball {
+  font-size: 1.5em;
+  margin-right: 0.5em;
+}
+.pk-title {
+  font-weight: bold;
+  font-size: 1.3em;
+  letter-spacing: 1px;
+}
+.pk-links a {
+  color: white;
+  margin-left: 1.5em;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.pk-links a:hover {
+  color: #ffd700;
+}
