@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Select from 'react-select'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './PokeSets.css'
+import pokeball from '../assets/pokeball.png'
 
 type Set = {
   id: string
@@ -82,7 +83,11 @@ export default function PokeSets() {
       <aside className="pokesets-sidebar d-flex flex-column p-0">
         <div className="pokesets-sidebar-header d-flex flex-column align-items-start justify-content-start w-100 p-4 pb-2 shadow-sm">
           <h4 className="mb-3 fw-bold d-flex align-items-center">
-            <span role="img" aria-label="Pokeball" className="pokesets-pokeball me-2">⚪️🔴</span>
+            <img
+              src={pokeball}
+              alt="Pokeball"
+              style={{ height: '1.3em', width: '1.3em', marginRight: '0.4em' }}
+            />
             Browse Sets
           </h4>
         </div>

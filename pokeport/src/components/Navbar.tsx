@@ -1,12 +1,17 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link } from 'react-router-dom'
+import pokeball from '../assets/pokeball.png'
 
 export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-black py-2">
       <div className="container-fluid">
         <Link className="navbar-brand d-flex align-items-center" to="/">
-          <span role="img" aria-label="Pokeball" style={{ fontSize: '1.5em', marginRight: '0.5em' }}>⚪️🔴</span>
+          <img
+            src={pokeball}
+            alt="Pokeball"
+            style={{ height: '1.5em', width: '1.5em', marginRight: '0.5em' }}
+          />
           PokéPort
         </Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
