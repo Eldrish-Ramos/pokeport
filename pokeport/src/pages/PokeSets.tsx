@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Select from 'react-select'
+import AsyncSelect from 'react-select/async'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './PokeSets.css'
 import pokeball from '../assets/pokeball.png'
@@ -34,6 +35,14 @@ type Card = {
       averageSellPrice?: number
     }
   }
+  set?: {
+    name: string
+    id: string
+    images?: {
+      symbol: string
+      logo: string
+    }
+  }
 }
 
 type SortOrder = 'none' | 'asc' | 'desc'
@@ -51,8 +60,12 @@ export default function PokeSets() {
   const [selectedSet, setSelectedSet] = useState<Set | null>(null)
   const [loadingSets, setLoadingSets] = useState(false)
   const [cards, setCards] = useState<Card[]>([])
-  const [loadingCards, setLoadingCards] = useState(false)
+  // Removed unused loadingCards state
   const [sortOrder, setSortOrder] = useState<SortOrder>('none')
+  const [searchCards, setSearchCards] = useState<Card[] | null>(null)
+  const [searchLoading, setSearchLoading] = useState(false)
+  const [searchError, setSearchError] = useState<string | null>(null)
+  const [setSelectValue, setSetSelectValue] = useState<{ value: string; label: string } | null>(null)
 
   useEffect(() => {
     setLoadingSets(true)
@@ -71,7 +84,6 @@ export default function PokeSets() {
 
   useEffect(() => {
     if (selectedSet) {
-      setLoadingCards(true)
       fetch(`https://api.pokemontcg.io/v2/cards?q=set.id:${selectedSet.id}`, {
         headers: {
           'X-Api-Key': API_KEY,
@@ -80,9 +92,8 @@ export default function PokeSets() {
         .then(res => res.json())
         .then(data => {
           setCards(data.data)
-          setLoadingCards(false)
         })
-        .catch(() => setLoadingCards(false))
+        .catch(() => {})
     } else {
       setCards([])
     }
@@ -100,6 +111,9 @@ export default function PokeSets() {
     } else {
       setSelectedSet(null)
     }
+    setSetSelectValue(option)
+    setSearchCards(null)
+    setSearchError(null)
   }
 
   // Helper to get the price for sorting
@@ -131,6 +145,76 @@ export default function PokeSets() {
     })
   }
 
+  // --- SEARCH BAR LOGIC ---
+  // Load options for AsyncSelect (live search)
+  const loadPokemonOptions = async (inputValue: string) => {
+    if (!inputValue || inputValue.length < 1) {
+      return []
+    }
+    setSearchError(null)
+    setSearchLoading(true)
+    try {
+      const res = await fetch(
+        `https://api.pokemontcg.io/v2/cards?q=name:${encodeURIComponent(inputValue)}*&pageSize=10`,
+        {
+          headers: {
+            'X-Api-Key': API_KEY,
+          },
+        }
+      )
+      const data = await res.json()
+      // Remove duplicates by name (for autoguess)
+      const seen = new Set<string>()
+      const options = data.data
+        .filter((card: Card) => {
+          if (seen.has(card.name)) return false
+          seen.add(card.name)
+          return true
+        })
+        .map((card: Card) => ({
+          value: card.name,
+          label: card.name,
+        }))
+      return options
+    } catch (e) {
+      setSearchError('Failed to load suggestions')
+      return []
+    } finally {
+      setSearchLoading(false)
+    }
+  }
+
+  // When a pokemon is selected, fetch all cards with that name
+  const handlePokemonSearch = async (option: { value: string; label: string } | null) => {
+    if (!option) {
+      setSearchCards(null)
+      setSearchError(null)
+      return
+    }
+    setSearchLoading(true)
+    setSearchError(null)
+    setSelectedSet(null)
+    setSetSelectValue(null)
+    try {
+      const res = await fetch(
+        `https://api.pokemontcg.io/v2/cards?q=name:"${encodeURIComponent(option.value)}"&pageSize=250`,
+        {
+          headers: {
+            'X-Api-Key': API_KEY,
+          },
+        }
+      )
+      const data = await res.json()
+      setSearchCards(data.data)
+    } catch (e) {
+      setSearchError('Failed to fetch cards for this Pokémon')
+      setSearchCards([])
+    } finally {
+      setSearchLoading(false)
+    }
+  }
+  const cardsToDisplay = searchCards ?? sortedCards
+
   return (
     <div className="pokesets-bg d-flex min-vh-100">
       {/* Sidebar */}
@@ -152,6 +236,7 @@ export default function PokeSets() {
             isLoading={loadingSets}
             options={options}
             onChange={handleChange}
+            value={setSelectValue}
             placeholder="Type to search..."
             classNamePrefix="pokesets-select"
           />
@@ -199,21 +284,15 @@ export default function PokeSets() {
       </aside>
       {/* Main content */}
       <main className="pokesets-main flex-grow-1 d-flex flex-column">
-        <div className="pokesets-set-banner card shadow-sm border-0 mb-4 d-flex flex-row align-items-center justify-content-center px-4 py-4">
-          {selectedSet && selectedSet.images?.logo ? (
+        <div className="pokesets-set-banner card shadow-sm border-0 mb-4 d-flex flex-row align-items-center justify-content-center px-4 py-4 flex-wrap">
+          {/* Only show logo if a set is selected AND not searching */}
+          {selectedSet && selectedSet.images?.logo && !searchCards ? (
             <img
               src={selectedSet.images.logo}
               alt={`${selectedSet.name} logo`}
               className="pokesets-set-banner-logo me-3"
             />
-          ) : (
-            <img
-              src={pokeball}
-              alt="Pokeball"
-              className="pokesets-set-banner-icon me-3"
-              style={{ width: '2.8em', height: '2.8em' }}
-            />
-          )}
+          ) : null}
           <div className="text-center w-100">
             <div className="pokesets-set-banner-title fw-bold">
               {selectedSet
@@ -221,14 +300,37 @@ export default function PokeSets() {
                 : <>Select a set to view cards</>
               }
             </div>
+            <div className="pokesets-set-banner-search mt-3 d-flex justify-content-center">
+              <div style={{ minWidth: 260, maxWidth: 400, width: '100%' }}>
+                <AsyncSelect
+                  cacheOptions
+                  loadOptions={loadPokemonOptions}
+                  defaultOptions={false}
+                  placeholder="Search for a Pokémon..."
+                  onChange={handlePokemonSearch}
+                  isClearable
+                  isLoading={searchLoading}
+                  classNamePrefix="pokesets-select"
+                  styles={{
+                    menu: base => ({
+                      ...base,
+                      zIndex: 9999
+                    })
+                  }}
+                />
+              </div>
+            </div>
+            {searchError && (
+              <div className="text-danger mt-2" style={{ fontSize: '0.97em' }}>{searchError}</div>
+            )}
           </div>
         </div>
-        {loadingCards && <div className="text-secondary mb-3">Loading cards...</div>}
-        {!loadingCards && sortedCards.length === 0 && selectedSet && (
-          <div className="text-muted mb-3">No cards found for this set.</div>
+        {searchLoading && <div className="text-secondary mb-3">Loading cards...</div>}
+        {!searchLoading && cardsToDisplay.length === 0 && (selectedSet || searchCards) && (
+          <div className="text-muted mb-3">No cards found for this search.</div>
         )}
         <div className="row g-4 flex-grow-1">
-          {sortedCards.map(card => {
+          {cardsToDisplay.map(card => {
             let price: number | undefined = getCardPrice(card)
             return (
               <div className="col-6 col-sm-4 col-md-3 col-lg-2" key={card.id}>
@@ -250,6 +352,11 @@ export default function PokeSets() {
                       <span className="pokesets-card-price pokesets-card-price-unavailable">N/A</span>
                     )}
                   </div>
+                  {card.set && (
+                    <div className="text-center mt-1" style={{ fontSize: '0.9em', color: '#bbb' }}>
+                      <span>{card.set.name}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )
