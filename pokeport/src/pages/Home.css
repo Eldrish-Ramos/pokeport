@@ -155,6 +155,10 @@
   letter-spacing: 0.5px;
 }
 
+.popular-sets-bottom-spacer {
+  padding-bottom: 5rem; /* Adjust to match or exceed your footer height */
+}
+
 @media (max-width: 991.98px) {
   .popular-set-img {
     height: 260px;

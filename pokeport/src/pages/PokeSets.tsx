@@ -10,6 +10,10 @@ type Set = {
   series: string
   releaseDate: string
   printedTotal: number
+  images?: {
+    symbol: string
+    logo: string
+  }
 }
 
 type Card = {
@@ -195,11 +199,30 @@ export default function PokeSets() {
       </aside>
       {/* Main content */}
       <main className="pokesets-main flex-grow-1 d-flex flex-column">
-        <h4 className="mb-4 pokesets-main-title">
-          {selectedSet
-            ? `Cards in "${selectedSet.name}"`
-            : 'Select a set to view cards'}
-        </h4>
+        <div className="pokesets-set-banner card shadow-sm border-0 mb-4 d-flex flex-row align-items-center justify-content-center px-4 py-4">
+          {selectedSet && selectedSet.images?.logo ? (
+            <img
+              src={selectedSet.images.logo}
+              alt={`${selectedSet.name} logo`}
+              className="pokesets-set-banner-logo me-3"
+            />
+          ) : (
+            <img
+              src={pokeball}
+              alt="Pokeball"
+              className="pokesets-set-banner-icon me-3"
+              style={{ width: '2.8em', height: '2.8em' }}
+            />
+          )}
+          <div className="text-center w-100">
+            <div className="pokesets-set-banner-title fw-bold">
+              {selectedSet
+                ? <>Cards in <span className="text-danger">"{selectedSet.name}"</span></>
+                : <>Select a set to view cards</>
+              }
+            </div>
+          </div>
+        </div>
         {loadingCards && <div className="text-secondary mb-3">Loading cards...</div>}
         {!loadingCards && sortedCards.length === 0 && selectedSet && (
           <div className="text-muted mb-3">No cards found for this set.</div>

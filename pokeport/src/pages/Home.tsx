@@ -97,7 +97,7 @@ export default function Home() {
       </section>
 
       {/* Popular Card Sets */}
-      <section className="container my-5">
+      <section className="container my-5 popular-sets-bottom-spacer">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h2 className="popular-sets-header">Popular Card Sets</h2>
         </div>

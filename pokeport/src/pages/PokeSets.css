@@ -204,6 +204,51 @@ body {
   padding-right: 12px !important;
 }
 
+.pokesets-set-banner {
+  background: #232323;
+  border-left: 6px solid #ef5350;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  min-height: 80px;
+  box-shadow: 0 2px 12px #0002;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.pokesets-set-banner-logo {
+  width: 10em;
+  height: 5em;
+  flex-shrink: 0;
+  object-fit: contain;
+  /* Remove background and padding for transparency */
+  border-radius: 0.5em;
+  box-shadow: 0 1px 6px #0002;
+}
+
+.pokesets-set-banner-icon {
+  width: 2.8em;
+  height: 2.8em;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px #0008);
+}
+
+.pokesets-set-banner-title {
+  font-size: 2.1em;
+  color: #fff;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.pokesets-set-banner-sub {
+  color: #bbb;
+  font-size: 0.97em;
+  margin-top: 0.1em;
+}
+
 /* --- MOBILE FIXES --- */
 @media (max-width: 767.98px) {
   .pokesets-bg {
