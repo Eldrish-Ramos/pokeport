@@ -168,5 +168,7 @@
   .popular-set-img {
     height: 180px;
   }
-  .popular-set-card {
-    min-height: 220px;
+    .popular-set-card {
+      min-height: 220px;
+    }
+  }
