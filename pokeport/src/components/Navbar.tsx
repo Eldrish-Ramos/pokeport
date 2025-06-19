@@ -25,17 +25,17 @@ export default function Navbar() {
             <li className="nav-item mx-2">
               <Link className="nav-link" to="/sets">Card Sets</Link>
             </li>
-            <li className="nav-item mx-2">
+            {/* <li className="nav-item mx-2">
               <a className="nav-link" href="#">My Collection</a>
             </li>
             <li className="nav-item mx-2">
               <a className="nav-link" href="#">Pricing</a>
-            </li>
+            </li> */}
           </ul>
-          <form className="d-flex me-3" role="search">
+          {/* <form className="d-flex me-3" role="search">
             <input className="form-control form-control-sm bg-dark text-white border-secondary" type="search" placeholder="Search cards..." aria-label="Search" />
           </form>
-          <button className="btn btn-danger btn-sm px-4" type="button">Sign In</button>
+          <button className="btn btn-danger btn-sm px-4" type="button">Sign In</button> */}
         </div>
       </div>
     </nav>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Home.css'
 
@@ -40,6 +41,7 @@ const popularSets: PopularSet[] = [
 
 export default function Home() {
   const [setImages, setSetImages] = useState<Record<string, string>>({})
+  const navigate = useNavigate()
 
   useEffect(() => {
     popularSets.forEach(async (set) => {
@@ -83,8 +85,13 @@ export default function Home() {
             Organize, manage, and showcase your Pokemon cards all in one place.
           </p>
           <div className="d-flex flex-column flex-sm-row justify-content-center gap-3 mb-4">
-            <button className="btn btn-danger btn-lg px-4">Start Tracking</button>
-            <button className="btn btn-outline-light btn-lg px-4">Explore Card Sets</button>
+            {/* <button className="btn btn-danger btn-lg px-4">Start Tracking</button> */}
+            <button
+              className="btn btn-outline-light btn-lg px-4"
+              onClick={() => navigate('/sets')}
+            >
+              Explore Card Sets
+            </button>
           </div>
         </div>
       </section>
