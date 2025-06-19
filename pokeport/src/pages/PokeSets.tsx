@@ -104,7 +104,7 @@ export default function PokeSets() {
     label: `${set.name} (${set.series})`,
   }))
 
-  const handleChange = (option: { value: string } | null) => {
+  const handleChange = (option: { value: string; label: string } | null) => {
     if (option) {
       const found = sets.find(set => set.id === option.value) || null
       setSelectedSet(found)
