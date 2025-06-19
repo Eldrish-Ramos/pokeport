@@ -77,16 +77,16 @@ export default function PokeSets() {
   }
 
   return (
-    <div className="pokeport-bg d-flex min-vh-100">
+    <div className="pokesets-bg d-flex min-vh-100">
       {/* Sidebar */}
-      <aside className="pokeport-sidebar d-flex flex-column p-0">
-        <div className="bg-danger text-white d-flex flex-column align-items-start justify-content-start w-100 p-4 pb-2 shadow-sm">
+      <aside className="pokesets-sidebar d-flex flex-column p-0">
+        <div className="pokesets-sidebar-header d-flex flex-column align-items-start justify-content-start w-100 p-4 pb-2 shadow-sm">
           <h4 className="mb-3 fw-bold d-flex align-items-center">
-            <span role="img" aria-label="Pokeball" className="pokeport-pokeball me-2">⚪️🔴</span>
+            <span role="img" aria-label="Pokeball" className="pokesets-pokeball me-2">⚪️🔴</span>
             Browse Sets
           </h4>
         </div>
-        <div className="p-3 flex-grow-1 d-flex flex-column">
+        <div className="pokesets-sidebar-content flex-grow-1 d-flex flex-column">
           <Select
             id="set-select"
             isClearable
@@ -94,12 +94,12 @@ export default function PokeSets() {
             options={options}
             onChange={handleChange}
             placeholder="Type to search..."
-            classNamePrefix="pokeport-select"
+            classNamePrefix="pokesets-select"
           />
           {selectedSet && (
-            <div className="card p-3 mt-4 shadow-sm border-0 pokeport-set-info">
+            <div className="card p-3 mt-4 shadow-sm border-0 pokesets-set-info">
               <h6 className="mb-2 text-danger">{selectedSet.name}</h6>
-              <p className="mb-1">
+              <p className="mb-1 text-light">
                 <strong>Series:</strong> {selectedSet.series}
                 <br />
                 <strong>Release Date:</strong> {selectedSet.releaseDate}
@@ -111,8 +111,8 @@ export default function PokeSets() {
         </div>
       </aside>
       {/* Main content */}
-      <main className="pokeport-main flex-grow-1 d-flex flex-column">
-        <h4 className="mb-4 text-danger pokeport-main-title">
+      <main className="pokesets-main flex-grow-1 d-flex flex-column">
+        <h4 className="mb-4 pokesets-main-title">
           {selectedSet
             ? `Cards in "${selectedSet.name}"`
             : 'Select a set to view cards'}
@@ -121,18 +121,18 @@ export default function PokeSets() {
         {!loadingCards && cards.length === 0 && selectedSet && (
           <div className="text-muted mb-3">No cards found for this set.</div>
         )}
-        <div className="row g-3 flex-grow-1 overflow-auto">
+        <div className="row g-4 flex-grow-1 overflow-auto">
           {cards.map(card => (
             <div className="col-6 col-sm-4 col-md-3 col-lg-2" key={card.id}>
-              <div className="card border-0 shadow-sm p-0 pokeport-card h-100 d-flex flex-column align-items-stretch">
-                <div className="pokeport-card-img-wrapper">
+              <div className="card border-0 shadow pokesets-card h-100 d-flex flex-column align-items-stretch">
+                <div className="pokesets-card-img-wrapper">
                   <img
                     src={card.images.large || card.images.small}
                     alt={card.name}
-                    className="pokeport-card-img"
+                    className="pokesets-card-img"
                   />
                 </div>
-                <div className="text-center mt-2 pokeport-card-title">
+                <div className="text-center mt-2 pokesets-card-title">
                   {card.name}
                 </div>
               </div>
