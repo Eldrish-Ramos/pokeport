@@ -34,11 +34,14 @@
   margin-right: 0.4em;
 }
 
+/* Make sidebar content scrollable and prevent overflow past footer */
 .pokesets-sidebar-content {
   padding: 1rem;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  max-height: calc(100vh - 120px); /* Adjust 120px if your header/footer are larger/smaller */
+  overflow-y: auto;
 }
 
 .pokesets-set-info {
@@ -46,10 +49,17 @@
   color: #fff;
 }
 
+.pokesets-info-section {
+  color: #ccc;
+  font-size: 0.97em;
+  font-style: italic;
+  padding: 0.5em 0.2em 0.5em 0.2em;
+  line-height: 1.5;
+}
+
 .pokesets-main {
   flex: 1;
-  padding: 2.5rem 1rem 5rem 1rem;
-  /* overflow-y: auto; */
+  padding: 2.5rem 1rem 7rem 1rem;
   display: flex;
   flex-direction: column;
   background: transparent;
@@ -65,7 +75,7 @@
 .pokesets-main .row::after {
   content: "";
   display: block;
-  height: 60px; /* Adjust as needed for your hover scale */
+  height: 60px;
   width: 100%;
 }
 
@@ -82,6 +92,8 @@
   box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.10);
   transition: transform 0.18s, box-shadow 0.18s;
   color: #fff;
+  will-change: transform;
+  contain: layout paint;
 }
 
 .pokesets-card:hover {
@@ -115,6 +127,24 @@
   text-shadow: 0 1px 4px #000b;
 }
 
+.pokesets-card-price {
+  display: inline-block;
+  font-weight: bold;
+  color: #ef5350;
+  font-size: 1.1em;
+  background: #fff2f2;
+  border-radius: 0.5em;
+  padding: 0.15em 0.6em;
+  margin-top: 0.2em;
+  box-shadow: 0 1px 4px #0001;
+}
+
+.pokesets-card-price-unavailable {
+  color: #aaa;
+  background: transparent;
+  font-weight: normal;
+}
+
 .pokesets-set-info h6,
 .pokesets-set-info p {
   color: #fff !important;
@@ -125,6 +155,17 @@
   border-radius: 0.7rem;
   color: #fff;
   box-shadow: 0 2px 8px #0003;
+}
+
+.pokesets-filter-section {
+  background: #232323;
+  border-radius: 0.7rem;
+  color: #fff;
+  box-shadow: 0 2px 8px #0003;
+}
+.pokesets-filter-section label,
+.pokesets-filter-section h6 {
+  color: #fff !important;
 }
 
 .pokesets-select__control {
@@ -186,8 +227,12 @@
   .pokesets-sidebar-content {
     padding: 0.5rem;
     flex: 1 1 auto;
+    max-height: 60vh;
   }
-    .pokesets-main {
-      padding: 1rem 0.25rem 1rem 0.25rem;
-    }
+  .pokesets-main {
+    padding: 1rem 0.25rem 7rem 0.25rem;
   }
+  .pokesets-set-info {
+    margin-bottom: 1rem;
+  }
+}

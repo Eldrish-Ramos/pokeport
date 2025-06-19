@@ -18,9 +18,29 @@ type Card = {
   images: { small: string; large: string }
   supertype: string
   subtypes?: string[]
+  tcgplayer?: {
+    prices?: {
+      normal?: { market?: number }
+      holofoil?: { market?: number }
+      reverseHolofoil?: { market?: number }
+    }
+  }
+  cardmarket?: {
+    prices?: {
+      averageSellPrice?: number
+    }
+  }
 }
 
+type SortOrder = 'none' | 'asc' | 'desc'
+
 const API_KEY = import.meta.env.VITE_POKEMONTCG_API_KEY
+
+const sortOptions = [
+  { value: 'none', label: 'None' },
+  { value: 'asc', label: 'Price: Low to High' },
+  { value: 'desc', label: 'Price: High to Low' }
+]
 
 export default function PokeSets() {
   const [sets, setSets] = useState<Set[]>([])
@@ -28,6 +48,7 @@ export default function PokeSets() {
   const [loadingSets, setLoadingSets] = useState(false)
   const [cards, setCards] = useState<Card[]>([])
   const [loadingCards, setLoadingCards] = useState(false)
+  const [sortOrder, setSortOrder] = useState<SortOrder>('none')
 
   useEffect(() => {
     setLoadingSets(true)
@@ -77,6 +98,35 @@ export default function PokeSets() {
     }
   }
 
+  // Helper to get the price for sorting
+  function getCardPrice(card: Card): number | undefined {
+    if (card.tcgplayer?.prices?.normal?.market) {
+      return card.tcgplayer.prices.normal.market
+    } else if (card.tcgplayer?.prices?.holofoil?.market) {
+      return card.tcgplayer.prices.holofoil.market
+    } else if (card.tcgplayer?.prices?.reverseHolofoil?.market) {
+      return card.tcgplayer.prices.reverseHolofoil.market
+    } else if (card.cardmarket?.prices?.averageSellPrice) {
+      return card.cardmarket.prices.averageSellPrice
+    }
+    return undefined
+  }
+
+  // Sort cards based on sortOrder
+  const sortedCards = [...cards]
+  if (sortOrder !== 'none') {
+    sortedCards.sort((a, b) => {
+      const priceA = getCardPrice(a)
+      const priceB = getCardPrice(b)
+      if (priceA === undefined && priceB === undefined) return 0
+      if (priceA === undefined) return 1
+      if (priceB === undefined) return -1
+      return sortOrder === 'asc'
+        ? priceA - priceB
+        : priceB - priceA
+    })
+  }
+
   return (
     <div className="pokesets-bg d-flex min-vh-100">
       {/* Sidebar */}
@@ -113,6 +163,34 @@ export default function PokeSets() {
               </p>
             </div>
           )}
+          {/* Filter Section */}
+          {selectedSet && (
+            <>
+              <div className="card p-3 mt-2 shadow-sm border-0 pokesets-filter-section">
+                <h6 className="mb-2 text-light">Filter & Sort</h6>
+                <div className="mb-2">
+                  <label className="form-label text-light fw-semibold mb-1" htmlFor="sort-select">
+                    Sort by Price
+                  </label>
+                  <Select
+                    id="sort-select"
+                    options={sortOptions}
+                    value={sortOptions.find(opt => opt.value === sortOrder)}
+                    onChange={opt => setSortOrder((opt?.value ?? 'none') as SortOrder)}
+                    classNamePrefix="pokesets-select"
+                    isSearchable={false}
+                    menuPlacement="auto"
+                  />
+                </div>
+              </div>
+              {/* Info Section */}
+              <div className="pokesets-info-section mt-3 mb-2">
+                <em>
+                  *AMP stands for AVERAGE MARKET PRICE - data is collected on sales from TCGPlayer taking into account lowest sold prices and highest sold prices. AMP is based off that data and assumes the card in question is in lightly used condition (good condition). If your card has suffered wear and tear, your sale price may heavily vary!
+                </em>
+              </div>
+            </>
+          )}
         </div>
       </aside>
       {/* Main content */}
@@ -123,26 +201,36 @@ export default function PokeSets() {
             : 'Select a set to view cards'}
         </h4>
         {loadingCards && <div className="text-secondary mb-3">Loading cards...</div>}
-        {!loadingCards && cards.length === 0 && selectedSet && (
+        {!loadingCards && sortedCards.length === 0 && selectedSet && (
           <div className="text-muted mb-3">No cards found for this set.</div>
         )}
-        <div className="row g-4 flex-grow-1 overflow-auto">
-          {cards.map(card => (
-            <div className="col-6 col-sm-4 col-md-3 col-lg-2" key={card.id}>
-              <div className="card border-0 shadow pokesets-card h-100 d-flex flex-column align-items-stretch">
-                <div className="pokesets-card-img-wrapper">
-                  <img
-                    src={card.images.large || card.images.small}
-                    alt={card.name}
-                    className="pokesets-card-img"
-                  />
-                </div>
-                <div className="text-center mt-2 pokesets-card-title">
-                  {card.name}
+        <div className="row g-4 flex-grow-1">
+          {sortedCards.map(card => {
+            let price: number | undefined = getCardPrice(card)
+            return (
+              <div className="col-6 col-sm-4 col-md-3 col-lg-2" key={card.id}>
+                <div className="card border-0 shadow pokesets-card h-100 d-flex flex-column align-items-stretch">
+                  <div className="pokesets-card-img-wrapper">
+                    <img
+                      src={card.images.large || card.images.small}
+                      alt={card.name}
+                      className="pokesets-card-img"
+                    />
+                  </div>
+                  <div className="text-center mt-2 pokesets-card-title">
+                    {card.name}
+                  </div>
+                  <div className="text-center mt-1">
+                    {price !== undefined ? (
+                      <span className="pokesets-card-price">AMP: ${price.toFixed(2)}</span>
+                    ) : (
+                      <span className="pokesets-card-price pokesets-card-price-unavailable">N/A</span>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </main>
     </div>
