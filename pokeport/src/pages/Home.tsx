@@ -81,7 +81,7 @@ export default function Home() {
         <div className="home-hero-content position-absolute top-50 start-50 translate-middle text-white">
           <h1 className="display-4 fw-bold mb-3">Track Your Pokemon Card Collection</h1>
           <p className="lead mb-4">
-            Pokeport is the modern way to view card prices and track your collection progress.<br />
+            Pokeport is a fresh way to view card prices and track your collection progress.<br />
             Organize, manage, and showcase your Pokemon cards all in one place.
           </p>
           <div className="d-flex flex-column flex-sm-row justify-content-center gap-3 mb-4">
