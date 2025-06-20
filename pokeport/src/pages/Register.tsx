@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import './Register.css'
 
 const REGISTER_MUTATION = gql`
@@ -83,7 +83,7 @@ export default function Register() {
         {success && <div className="alert alert-success mt-3">Registration successful! Redirecting...</div>}
         <div className="text-center mt-3">
           <span className="text-light">Already have an account? </span>
-          <a href="/login" className="text-danger fw-bold">Login</a>
+          <Link to="/login" className="text-danger fw-bold">Login</Link>
         </div>
       </form>
     </div>
