@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import './Login.css'
 
@@ -75,7 +75,7 @@ export default function Login() {
         {success && <div className="alert alert-success mt-3">Login successful! Redirecting...</div>}
         <div className="text-center mt-3">
           <span className="text-light">Don't have an account? </span>
-          <a href="/register" className="text-danger fw-bold">Register</a>
+          <Link to="/register" className="text-danger fw-bold">Register</Link>
         </div>
       </form>
     </div>
