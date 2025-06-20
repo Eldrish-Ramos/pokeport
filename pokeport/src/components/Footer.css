@@ -1,6 +1,6 @@
 .pk-footer {
-  background: #ef5350;
-  color: white;
+  background: var(--theme-accent);
+  color: var(--theme-text);
   text-align: center;
   padding: 1em 0;
   font-size: 1em;

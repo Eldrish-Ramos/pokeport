@@ -1,8 +1,33 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import pokeball from '../assets/pokeball.png'
+import { useEffect, useState } from 'react'
+import { useTheme } from '../contexts/ThemeContext'
 
 export default function Navbar() {
+  const navigate = useNavigate()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { setTheme } = useTheme() // <-- import setTheme from context
+
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem('token'))
+    const handler = () => setIsLoggedIn(!!localStorage.getItem('token'))
+    window.addEventListener('authchange', handler)
+    window.addEventListener('storage', handler)
+    return () => {
+      window.removeEventListener('authchange', handler)
+      window.removeEventListener('storage', handler)
+    }
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    window.dispatchEvent(new Event('authchange'))
+    setIsLoggedIn(false)
+    setTheme('default') // <-- Reset theme to default on logout
+    navigate('/')
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-black py-2">
       <div className="container-fluid">
@@ -25,17 +50,27 @@ export default function Navbar() {
             <li className="nav-item mx-2">
               <Link className="nav-link" to="/sets">Card Sets</Link>
             </li>
-            {/* <li className="nav-item mx-2">
-              <a className="nav-link" href="#">My Collection</a>
-            </li>
             <li className="nav-item mx-2">
-              <a className="nav-link" href="#">Pricing</a>
-            </li> */}
+              <Link className="nav-link" to="/themes">Themes</Link>
+            </li>
           </ul>
-          {/* <form className="d-flex me-3" role="search">
-            <input className="form-control form-control-sm bg-dark text-white border-secondary" type="search" placeholder="Search cards..." aria-label="Search" />
-          </form>
-          <button className="btn btn-danger btn-sm px-4" type="button">Sign In</button> */}
+          {isLoggedIn ? (
+            <button
+              className="btn btn-outline-light btn-sm px-4"
+              type="button"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              className="btn btn-danger btn-sm px-4"
+              type="button"
+              onClick={() => navigate('/login')}
+            >
+              Sign In
+            </button>
+          )}
         </div>
       </div>
     </nav>

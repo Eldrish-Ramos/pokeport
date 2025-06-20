@@ -11,7 +11,7 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em var(--theme-accent, #646cffaa));
 }
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
@@ -34,8 +34,123 @@
 
 .card {
   padding: 2em;
+  background: var(--theme-card-bg);
+  color: var(--theme-text);
+  border: 2px solid var(--theme-border);
+  border-radius: 1em;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.10);
 }
 
 .read-the-docs {
-  color: #888;
+  color: var(--theme-accent2, #888);
+}
+
+:root {
+  --theme-bg: #181818;
+  --theme-card-bg: #232323;
+  --theme-accent: #ef5350;
+  --theme-accent2: #ffd700;
+  --theme-accent3: #fff2f2;
+  --theme-btn: #ef5350;
+  --theme-btn-text: #fff;
+  --theme-border: #ef5350;
+  --theme-text: #fff;
+}
+
+body[data-theme='default'] {
+  --theme-bg: #181818;
+  --theme-card-bg: #232323;
+  --theme-accent: #ef5350;
+  --theme-accent2: #ffd700;
+  --theme-accent3: #fff2f2;
+  --theme-btn: #ef5350;
+  --theme-btn-text: #fff;
+  --theme-border: #ef5350;
+  --theme-text: #fff;
+}
+body[data-theme='Fire'] {
+  --theme-bg: #2d1a0b;
+  --theme-card-bg: #3d1f0e;
+  --theme-accent: #EE8130;
+  --theme-accent2: #ffb347;
+  --theme-accent3: #fff2e0;
+  --theme-btn: #EE8130;
+  --theme-btn-text: #fff;
+  --theme-border: #ffb347;
+  --theme-text: #fff;
+}
+body[data-theme='Water'] {
+  --theme-bg: #0b1a2d;
+  --theme-card-bg: #142c44;
+  --theme-accent: #6390F0;
+  --theme-accent2: #30cfff;
+  --theme-accent3: #e0f7ff;
+  --theme-btn: #6390F0;
+  --theme-btn-text: #fff;
+  --theme-border: #30cfff;
+  --theme-text: #fff;
+}
+body[data-theme='Grass'] {
+  --theme-bg: #142d1a;
+  --theme-card-bg: #1e3d25;
+  --theme-accent: #7AC74C;
+  --theme-accent2: #b6e388;
+  --theme-accent3: #eaffea;
+  --theme-btn: #7AC74C;
+  --theme-btn-text: #fff;
+  --theme-border: #b6e388;
+  --theme-text: #fff;
+}
+body[data-theme='Lightning'] {
+  --theme-bg: #2d2a0b;
+  --theme-card-bg: #3d3a0e;
+  --theme-accent: #F7D02C;
+  --theme-accent2: #fff700;
+  --theme-accent3: #fffbe0;
+  --theme-btn: #F7D02C;
+  --theme-btn-text: #222;
+  --theme-border: #fff700;
+  --theme-text: #222;
+}
+body[data-theme='Psychic'] {
+  --theme-bg: #2d0b1a;
+  --theme-card-bg: #3d0e1f;
+  --theme-accent: #F95587;
+  --theme-text: #fff;
+}
+body[data-theme='Fighting'] {
+  --theme-bg: #2d140b;
+  --theme-card-bg: #3d1e0e;
+  --theme-accent: #C22E28;
+  --theme-text: #fff;
+}
+body[data-theme='Metal'] {
+  --theme-bg: #232d2d;
+  --theme-card-bg: #2e3d3d;
+  --theme-accent: #B7B7CE;
+  --theme-text: #fff;
+}
+body[data-theme='Darkness'] {
+  --theme-bg: #181818;
+  --theme-card-bg: #232323;
+  --theme-accent: #705746;
+  --theme-text: #fff;
+}
+body[data-theme='Fairy'] {
+  --theme-bg: #2d1a23;
+  --theme-card-bg: #3d1e2e;
+  --theme-accent: #D685AD;
+  --theme-text: #fff;
+}
+body[data-theme='Colorless'] {
+  --theme-bg: #232323;
+  --theme-card-bg: #e6e6e6;
+  --theme-accent: #A8A77A;
+  --theme-text: #222;
+}
+body[data-theme='Dragon'] {
+  --theme-bg: #1a1a2d;
+  --theme-card-bg: #23233d;
+  --theme-accent: #6F35FC;
+  --theme-text: #fff;
 }

@@ -1,0 +1,62 @@
+.auth-bg {
+  background: var(--theme-bg);
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  background: var(--theme-card-bg) !important;
+  border-radius: 1.2rem !important;
+  color: var(--theme-text);
+  min-width: 340px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.10);
+}
+
+.auth-card label {
+  color: var(--theme-text);
+  font-weight: 500;
+}
+
+.auth-card input.form-control {
+  background: var(--theme-bg);
+  color: var(--theme-text);
+  border: 1px solid var(--theme-accent);
+  border-radius: 0.5em;
+}
+
+.auth-card input.form-control:focus {
+  border-color: var(--theme-accent2);
+  background: var(--theme-card-bg);
+  color: var(--theme-text);
+  box-shadow: 0 0 0 0.2rem var(--theme-accent, rgba(239,83,80,0.15));
+}
+
+.auth-card .btn-danger {
+  background: var(--theme-btn);
+  border: none;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: 1.1em;
+  color: var(--theme-btn-text);
+}
+
+.auth-card .btn-danger:active,
+.auth-card .btn-danger:focus {
+  background: var(--theme-accent);
+}
+
+.auth-card .alert {
+  font-size: 0.97em;
+  margin-top: 1em;
+}
+
+.auth-card a {
+  color: var(--theme-accent2);
+  text-decoration: underline;
+  font-weight: 600;
+}

@@ -1,6 +1,6 @@
 .pk-navbar {
-  background: #ef5350;
-  color: white;
+  background: var(--theme-accent);
+  color: var(--theme-text);
   padding: 0.5em 0;
   box-shadow: 0 2px 8px #0002;
   width: 100vw;
@@ -27,12 +27,12 @@
   letter-spacing: 1px;
 }
 .pk-links a {
-  color: white;
+  color: var(--theme-text);
   margin-left: 1.5em;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
 }
 .pk-links a:hover {
-  color: #ffd700;
+  color: var(--theme-accent2);
 }
