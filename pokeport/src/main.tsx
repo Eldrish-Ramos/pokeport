@@ -9,15 +9,15 @@ import { ThemeProvider } from './contexts/ThemeContext'
 
 
 // uncheck when doing local
-const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
-})
+// const httpLink = createHttpLink({
+//   uri: 'http://localhost:4000/graphql',
+// })
 
 //uncheck when trying Render
 
-// const httpLink = createHttpLink({
-//   uri: 'https://pokeport.onrender.com/graphql',
-// })
+const httpLink = createHttpLink({
+  uri: 'https://pokeport.onrender.com/graphql',
+})
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token')
