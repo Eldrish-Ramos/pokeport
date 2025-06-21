@@ -253,7 +253,7 @@ export default function Collection() {
                     ? setOptions.find(opt => opt.value === selectedSet)
                     : { value: '', label: 'All Sets' }
                 }
-                onChange={opt => setSelectedSet(opt?.value || null)}
+                onChange={opt => setSelectedSet(opt && typeof opt.value === 'string' ? opt.value : null)}
                 isClearable={false}
                 placeholder="Filter by Set"
                 classNamePrefix="collection-select"
