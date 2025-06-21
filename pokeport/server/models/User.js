@@ -4,5 +4,14 @@ const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   password: String,
   theme: { type: String, default: 'default' },
+  collection: {
+    type: [
+      {
+        cardId: String,
+        setId: String,
+      }
+    ],
+    default: [],
+  },
 })
 export default mongoose.model('User', userSchema)

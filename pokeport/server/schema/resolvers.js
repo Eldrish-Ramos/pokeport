@@ -38,5 +38,23 @@ export default {
       )
       return updated
     },
+    addToCollection: async (_, { cardId, setId }, { user }) => {
+      if (!user) throw new Error('Not authenticated')
+      const updated = await User.findByIdAndUpdate(
+        user.id,
+        { $addToSet: { collection: { cardId, setId } } },
+        { new: true }
+      )
+      return updated
+    },
+    removeFromCollection: async (_, { cardId, setId }, { user }) => {
+      if (!user) throw new Error('Not authenticated')
+      const updated = await User.findByIdAndUpdate(
+        user.id,
+        { $pull: { collection: { cardId, setId } } },
+        { new: true }
+      )
+      return updated
+    },
   },
 }

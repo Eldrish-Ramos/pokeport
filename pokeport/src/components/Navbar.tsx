@@ -53,6 +53,9 @@ export default function Navbar() {
             <li className="nav-item mx-2">
               <Link className="nav-link" to="/themes">Themes</Link>
             </li>
+            <li className="nav-item mx-2">
+              <Link className="nav-link" to="/collection">Collection</Link>
+            </li>
           </ul>
           {isLoggedIn ? (
             <button

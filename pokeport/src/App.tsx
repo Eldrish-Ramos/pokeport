@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Themes from './pages/Themes'
+import Collection from './pages/Collection'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/sets" element={<PokeSets />} />
         <Route path="/themes" element={<Themes />} />
+        <Route path="/collection" element={<Collection />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

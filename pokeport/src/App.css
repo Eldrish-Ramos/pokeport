@@ -45,6 +45,34 @@
   color: var(--theme-accent2, #888);
 }
 
+/* Remove text-shadow from card, headings, and general text */
+.card,
+.collection-card-title,
+.collection-title,
+.collection-header,
+.pokesets-card-title,
+.pokesets-set-banner-title,
+.popular-sets-header,
+.popular-set-title,
+.popular-set-details,
+.popular-set-detail-label,
+.popular-set-date,
+.themes-bg h1,
+.theme-type-label,
+.theme-type-selected-badge,
+.auth-card label,
+.auth-card .alert,
+.auth-card a,
+.home-hero-content h1,
+.home-hero-content p,
+.home-hero-content .btn,
+.text-light,
+.text-danger,
+.text-muted,
+.text-secondary {
+  text-shadow: none !important;
+}
+
 :root {
   --theme-bg: #181818;
   --theme-card-bg: #232323;
@@ -55,6 +83,8 @@
   --theme-btn-text: #fff;
   --theme-border: #ef5350;
   --theme-text: #fff;
+  --theme-add-btn: linear-gradient(135deg, #ffd700 60%, #ef5350 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #ef5350 60%, #ffd700 100%);
 }
 
 body[data-theme='default'] {
@@ -67,7 +97,11 @@ body[data-theme='default'] {
   --theme-btn-text: #fff;
   --theme-border: #ef5350;
   --theme-text: #fff;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #ffd700 60%, #ef5350 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #ef5350 60%, #ffd700 100%);
 }
+
 body[data-theme='Fire'] {
   --theme-bg: #2d1a0b;
   --theme-card-bg: #3d1f0e;
@@ -78,7 +112,11 @@ body[data-theme='Fire'] {
   --theme-btn-text: #fff;
   --theme-border: #ffb347;
   --theme-text: #fff;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #ffb347 60%, #EE8130 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #EE8130 60%, #ffb347 100%);
 }
+
 body[data-theme='Water'] {
   --theme-bg: #0b1a2d;
   --theme-card-bg: #142c44;
@@ -89,7 +127,11 @@ body[data-theme='Water'] {
   --theme-btn-text: #fff;
   --theme-border: #30cfff;
   --theme-text: #fff;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #30cfff 60%, #6390F0 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #6390F0 60%, #30cfff 100%);
 }
+
 body[data-theme='Grass'] {
   --theme-bg: #142d1a;
   --theme-card-bg: #1e3d25;
@@ -100,7 +142,11 @@ body[data-theme='Grass'] {
   --theme-btn-text: #fff;
   --theme-border: #b6e388;
   --theme-text: #fff;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #b6e388 60%, #7AC74C 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #7AC74C 60%, #b6e388 100%);
 }
+
 body[data-theme='Lightning'] {
   --theme-bg: #2d2a0b;
   --theme-card-bg: #3d3a0e;
@@ -110,47 +156,113 @@ body[data-theme='Lightning'] {
   --theme-btn: #F7D02C;
   --theme-btn-text: #222;
   --theme-border: #fff700;
-  --theme-text: #222;
+  --theme-text: #fff;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #fff700 60%, #F7D02C 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #F7D02C 60%, #fff700 100%);
 }
+
 body[data-theme='Psychic'] {
   --theme-bg: #2d0b1a;
   --theme-card-bg: #3d0e1f;
   --theme-accent: #F95587;
+  --theme-accent2: #e0aaff;
+  --theme-accent3: #fbeaff;
+  --theme-btn: #F95587;
+  --theme-btn-text: #fff;
+  --theme-border: #e0aaff;
   --theme-text: #fff;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #e0aaff 60%, #F95587 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #F95587 60%, #e0aaff 100%);
 }
+
 body[data-theme='Fighting'] {
   --theme-bg: #2d140b;
   --theme-card-bg: #3d1e0e;
   --theme-accent: #C22E28;
+  --theme-accent2: #ffb380;
+  --theme-accent3: #fff2e0;
+  --theme-btn: #C22E28;
+  --theme-btn-text: #fff;
+  --theme-border: #ffb380;
   --theme-text: #fff;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #ffb380 60%, #C22E28 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #C22E28 60%, #ffb380 100%);
 }
+
 body[data-theme='Metal'] {
   --theme-bg: #232d2d;
   --theme-card-bg: #2e3d3d;
   --theme-accent: #B7B7CE;
+  --theme-accent2: #e0e0e0;
+  --theme-accent3: #f8f8ff;
+  --theme-btn: #B7B7CE;
+  --theme-btn-text: #222;
+  --theme-border: #e0e0e0;
   --theme-text: #fff;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #e0e0e0 60%, #B7B7CE 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #B7B7CE 60%, #e0e0e0 100%);
 }
+
 body[data-theme='Darkness'] {
   --theme-bg: #181818;
   --theme-card-bg: #232323;
   --theme-accent: #705746;
+  --theme-accent2: #bca18d;
+  --theme-accent3: #f5f0eb;
+  --theme-btn: #705746;
+  --theme-btn-text: #fff;
+  --theme-border: #bca18d;
   --theme-text: #fff;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #bca18d 60%, #705746 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #705746 60%, #bca18d 100%);
 }
+
 body[data-theme='Fairy'] {
   --theme-bg: #2d1a23;
   --theme-card-bg: #3d1e2e;
   --theme-accent: #D685AD;
+  --theme-accent2: #ffe0f7;
+  --theme-accent3: #fff0fa;
+  --theme-btn: #D685AD;
+  --theme-btn-text: #fff;
+  --theme-border: #ffe0f7;
   --theme-text: #fff;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #ffe0f7 60%, #D685AD 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #D685AD 60%, #ffe0f7 100%);
 }
+
 body[data-theme='Colorless'] {
-  --theme-bg: #232323;
-  --theme-card-bg: #e6e6e6;
+  --theme-bg: #e6e6e6;
+  --theme-card-bg: #fff;
   --theme-accent: #A8A77A;
+  --theme-accent2: #fffbe0;
+  --theme-accent3: #f7f7f7;
+  --theme-btn: #A8A77A;
+  --theme-btn-text: #222;
+  --theme-border: #A8A77A;
   --theme-text: #222;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #fffbe0 60%, #A8A77A 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #A8A77A 60%, #fffbe0 100%);
 }
+
 body[data-theme='Dragon'] {
   --theme-bg: #1a1a2d;
   --theme-card-bg: #23233d;
   --theme-accent: #6F35FC;
+  --theme-accent2: #b39ddb;
+  --theme-accent3: #ede7f6;
+  --theme-btn: #6F35FC;
+  --theme-btn-text: #fff;
+  --theme-border: #b39ddb;
   --theme-text: #fff;
+  --theme-accent-text: #222;
+  --theme-add-btn: linear-gradient(135deg, #b39ddb 60%, #6F35FC 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #6F35FC 60%, #b39ddb 100%);
 }

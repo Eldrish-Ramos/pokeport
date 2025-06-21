@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Select from 'react-select'
 import AsyncSelect from 'react-select/async'
+import { Toast, ToastContainer } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './PokeSets.css'
 import pokeball from '../assets/pokeball.png'
+import { useMutation, gql, useQuery } from '@apollo/client'
 
 type Set = {
   id: string
@@ -55,17 +57,54 @@ const sortOptions = [
   { value: 'desc', label: 'Price: High to Low' }
 ]
 
+const ADD_TO_COLLECTION = gql`
+  mutation AddToCollection($cardId: String!, $setId: String!) {
+    addToCollection(cardId: $cardId, setId: $setId) {
+      collection {
+        cardId
+        setId
+      }
+    }
+  }
+`
+const ME_QUERY = gql`
+  query Me {
+    me {
+      collection {
+        cardId
+        setId
+      }
+    }
+  }
+`
+
 export default function PokeSets() {
   const [sets, setSets] = useState<Set[]>([])
   const [selectedSet, setSelectedSet] = useState<Set | null>(null)
   const [loadingSets, setLoadingSets] = useState(false)
   const [cards, setCards] = useState<Card[]>([])
-  // Removed unused loadingCards state
   const [sortOrder, setSortOrder] = useState<SortOrder>('none')
   const [searchCards, setSearchCards] = useState<Card[] | null>(null)
   const [searchLoading, setSearchLoading] = useState(false)
   const [searchError, setSearchError] = useState<string | null>(null)
   const [setSelectValue, setSetSelectValue] = useState<{ value: string; label: string } | null>(null)
+  const [showToast, setShowToast] = useState(false)
+  const [showAll, setShowAll] = useState(true)
+  const toastTimeout = useRef<NodeJS.Timeout | null>(null)
+
+  const { data: meData } = useQuery(ME_QUERY)
+  const userCollection = meData?.me?.collection ?? []
+
+  // Helper to check if card is in collection for this set
+  function isCardInCollection(cardId: string, setId: string) {
+    return userCollection.some((entry: { cardId: string; setId: string }) =>
+      entry.cardId === cardId && entry.setId === setId
+    )
+  }
+
+  const [addToCollection] = useMutation(ADD_TO_COLLECTION, {
+    refetchQueries: [{ query: ME_QUERY }],
+  })
 
   useEffect(() => {
     setLoadingSets(true)
@@ -215,6 +254,26 @@ export default function PokeSets() {
   }
   const cardsToDisplay = searchCards ?? sortedCards
 
+  const isLoggedIn = !!meData?.me
+
+  const handleAddToCollection = async (cardId: string, setId: string) => {
+    try {
+      await addToCollection({ variables: { cardId, setId } })
+      setShowToast(true)
+      // Hide toast after 2 seconds
+      if (toastTimeout.current) clearTimeout(toastTimeout.current)
+      toastTimeout.current = setTimeout(() => setShowToast(false), 2000)
+    } catch (e) {
+      // Optionally handle error
+    }
+  }
+
+  const filteredCards = showAll
+    ? cardsToDisplay
+    : cardsToDisplay.filter(card =>
+        !isCardInCollection(card.id, card.set?.id || '')
+      )
+
   return (
     <div className="pokesets-bg d-flex min-vh-100">
       {/* Sidebar */}
@@ -241,20 +300,17 @@ export default function PokeSets() {
             classNamePrefix="pokesets-select"
           />
           {selectedSet && (
-            <div className="card p-3 mt-4 shadow-sm border-0 pokesets-set-info">
-              <h6 className="mb-2 text-danger">{selectedSet.name}</h6>
-              <p className="mb-1 text-light">
-                <strong>Series:</strong> {selectedSet.series}
-                <br />
-                <strong>Release Date:</strong> {selectedSet.releaseDate}
-                <br />
-                <strong>Total Cards:</strong> {selectedSet.printedTotal}
-              </p>
-            </div>
-          )}
-          {/* Filter Section */}
-          {selectedSet && (
             <>
+              <div className="card p-3 mt-4 shadow-sm border-0 pokesets-set-info">
+                <h6 className="mb-2 text-danger">{selectedSet.name}</h6>
+                <p className="mb-1 text-light">
+                  <strong>Series:</strong> {selectedSet.series}
+                  <br />
+                  <strong>Release Date:</strong> {selectedSet.releaseDate}
+                  <br />
+                  <strong>Total Cards:</strong> {selectedSet.printedTotal}
+                </p>
+              </div>
               <div className="card p-3 mt-2 shadow-sm border-0 pokesets-filter-section">
                 <h6 className="mb-2 text-light">Filter & Sort</h6>
                 <div className="mb-2">
@@ -272,8 +328,31 @@ export default function PokeSets() {
                   />
                 </div>
               </div>
-              {/* Info Section */}
-              <div className="pokesets-info-section mt-3 mb-2">
+              {/* --- MOVE TOGGLE HERE --- */}
+              <div className="pokesets-radio-toggle mt-3 mb-2">
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="showCards"
+                    checked={showAll}
+                    onChange={() => setShowAll(true)}
+                  />
+                  <span className="custom-radio"></span>
+                  Show All
+                </label>
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="showCards"
+                    checked={!showAll}
+                    onChange={() => setShowAll(false)}
+                  />
+                  <span className="custom-radio"></span>
+                  Not Collected
+                </label>
+              </div>
+              {/* --- AMP info below --- */}
+              <div className="pokesets-info-section">
                 <em>
                   *AMP stands for AVERAGE MARKET PRICE - data is collected on sales from TCGPlayer taking into account lowest sold prices and highest sold prices. AMP is based off that data and assumes the card in question is in lightly used condition (good condition). If your card has suffered wear and tear, your sale price may heavily vary!
                 </em>
@@ -329,13 +408,48 @@ export default function PokeSets() {
         {!searchLoading && cardsToDisplay.length === 0 && (selectedSet || searchCards) && (
           <div className="text-muted mb-3">No cards found for this search.</div>
         )}
+        <ToastContainer
+          position="top-center"
+          className="poke-toast-container"
+          style={{
+            position: 'fixed',
+            top: '2.5rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 9999,
+            minWidth: 320,
+            pointerEvents: 'none'
+          }}
+        >
+          <Toast
+            show={showToast}
+            onClose={() => setShowToast(false)}
+            bg="success"
+            delay={2000}
+            autohide
+            style={{
+              pointerEvents: 'auto',
+              borderRadius: '1em',
+              boxShadow: '0 4px 24px #0007',
+              background: 'var(--theme-accent)',
+              color: 'var(--theme-text)',
+              fontWeight: 600,
+              fontSize: '1.1em'
+            }}
+          >
+            <Toast.Body className="text-white fw-bold text-center">
+              Card added to your collection
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
         <div className="row g-4 flex-grow-1">
-          {cardsToDisplay.map(card => {
+          {filteredCards.map(card => {
             let price: number | undefined = getCardPrice(card)
+            const inCollection = isCardInCollection(card.id, card.set?.id || '')
             return (
               <div className="col-6 col-sm-4 col-md-3 col-lg-2" key={card.id}>
-                <div className="card border-0 shadow pokesets-card h-100 d-flex flex-column align-items-stretch">
-                  <div className="pokesets-card-img-wrapper">
+                <div className="card border-0 shadow pokesets-card h-100 d-flex flex-column align-items-stretch position-relative">
+                  <div className="pokesets-card-img-wrapper position-relative">
                     <img
                       src={card.images.large || card.images.small}
                       alt={card.name}
@@ -356,6 +470,15 @@ export default function PokeSets() {
                     <div className="text-center mt-1" style={{ fontSize: '0.9em', color: '#bbb' }}>
                       <span>{card.set.name}</span>
                     </div>
+                  )}
+                  {isLoggedIn && !inCollection && (
+                    <button
+                      className="add-to-collection-btn"
+                      title="Add to Collection"
+                      onClick={() => handleAddToCollection(card.id, card.set?.id || '')}
+                    >
+                      <span className="plus-icon">+</span>
+                    </button>
                   )}
                 </div>
               </div>
