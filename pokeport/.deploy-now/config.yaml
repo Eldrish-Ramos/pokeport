@@ -1,0 +1,6 @@
+project:
+  name: pokeport
+  type: nodejs
+  buildCommand: npm run build
+  startCommand: node server/index.js
+  outputDirectory: .
