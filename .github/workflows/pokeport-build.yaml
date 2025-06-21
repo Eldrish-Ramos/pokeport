@@ -1,3 +1,4 @@
+# .github/workflows/deploy-now.yml
 name: "Deploy Now: Execute Build"
 
 on:
@@ -11,12 +12,15 @@ on:
         type: string
 
 env:
-  DEPLOYMENT_FOLDER: ./dist
+  DEPLOYMENT_FOLDER: dist
 
 jobs:
   build-project:
     name: build pokeport
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pokeport
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,7 +37,7 @@ jobs:
 
       - name: Install dependencies (server)
         run: npm install
-        working-directory: ./server
+        working-directory: pokeport/server
 
       - name: Build frontend
         env:
@@ -52,6 +56,6 @@ jobs:
           project-id: 0635527e-b792-46fb-8c9c-8d57bd258937
           branch-id: ${{ inputs.branch-id }}
           version: ${{ github.sha }}
-          folder: ${{ env.DEPLOYMENT_FOLDER }}
-          config-file: .deploy-now/pokeport/config.yaml
+          folder: pokeport/dist
+          config-file: pokeport/.deploy-now/pokeport/config.yaml
           action: upload
