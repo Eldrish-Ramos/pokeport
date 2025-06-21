@@ -1,6 +1,3 @@
-# To better understand this file read this:
-# https://docs.ionos.space/docs/github-actions-customization/
-
 name: "Deploy Now: Execute Build"
 
 on:
@@ -17,38 +14,36 @@ env:
   DEPLOYMENT_FOLDER: ./dist
 
 jobs:
-# Please do not rename this job
   build-project:
     name: build pokeport
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: 'recursive'
 
-      - name: Run script
-        env:
-          JWT_SECRET: Iz6FFbW.OU^.HNGHmUvsW8hg0UD6ARUTs
-          MONGODB_URI: mongodb+srv://eldrishramosperez:mzs5uktZPNI5ZFhD@shrinebuilder.4ncfvnm.mongodb.net/
-          POKEMON_TCGAPI_KEY: e54c0f14-9794-4ef7-a160-47fe7194bd35
-        run: npm run build
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: v22.x
+          node-version: 22.x
 
-      - name: Build Node assets
+      - name: Install dependencies (root)
+        run: npm install
+
+      - name: Install dependencies (server)
+        run: npm install
+        working-directory: ./server
+
+      - name: Build frontend
         env:
-          CI: true
-          JWT_SECRET: Iz6FFbW.OU^.HNGHmUvsW8hg0UD6ARUTs
-          MONGODB_URI: mongodb+srv://eldrishramosperez:mzs5uktZPNI5ZFhD@shrinebuilder.4ncfvnm.mongodb.net/
-          POKEMON_TCGAPI_KEY: e54c0f14-9794-4ef7-a160-47fe7194bd35
-          SITE_URL: ${{ inputs.site-url }}
-        run: node server/index.js
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          POKEMON_TCGAPI_KEY: ${{ secrets.POKEMON_TCGAPI_KEY }}
+        run: npm run build
 
-# Please do not touch the following action
+      # Do NOT run the server here; IONOS will start it after deployment
+
       - name: Store deployment content
         uses: ionos-deploy-now/artifact-action@v1
         with:
