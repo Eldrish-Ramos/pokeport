@@ -96,7 +96,7 @@ export default function Collection() {
 
       // Batch fetch all cards by IDs
       const ids = filtered.map((entry: { cardId: string }) => entry.cardId)
-      const query = ids.map(id => `id:${id}`).join(' OR ')
+      const query = ids.map((id: string) => `id:${id}`).join(' OR ')
       fetch(`https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(query)}`, {
         headers: { 'X-Api-Key': import.meta.env.VITE_POKEMON_TCGAPI_KEY }
       })
@@ -176,7 +176,7 @@ export default function Collection() {
             id="set-select"
             isClearable
             options={setOptions}
-            onChange={opt => setSelectedSet(opt?.value || null)}
+            onChange={opt => setSelectedSet(opt && typeof opt.value === 'string' ? opt.value : null)}
             value={
               selectedSet
                 ? setOptions.find(opt => opt.value === selectedSet)
