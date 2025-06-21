@@ -11,7 +11,7 @@ on:
         type: string
 
 env:
-  DEPLOYMENT_FOLDER: pokeport
+  DEPLOYMENT_FOLDER: .
 
 jobs:
   build-project:
@@ -55,6 +55,6 @@ jobs:
           project-id: c27592f1-e993-44d6-a9d8-a0e2d7bb60b3
           branch-id: ${{ inputs.branch-id }}
           version: ${{ github.sha }}
-          folder: pokeport
-          config-file: pokeport/.deploy-now/config.yaml
+          folder: .
+          config-file: .deploy-now/config.yaml
           action: upload
