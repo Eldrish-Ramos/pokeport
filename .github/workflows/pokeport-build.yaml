@@ -1,0 +1,62 @@
+# To better understand this file read this:
+# https://docs.ionos.space/docs/github-actions-customization/
+
+name: "Deploy Now: Execute Build"
+
+on:
+  workflow_call:
+    inputs:
+      site-url:
+        required: true
+        type: string
+      branch-id:
+        required: true
+        type: string
+
+env:
+  DEPLOYMENT_FOLDER: ./pokeport/dist
+
+jobs:
+# Please do not rename this job
+  build-project:
+    name: build pokeport
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Run script
+        env:
+          JWT_SECRET: Iz6FFbW.OU^.HNGHmUvsW8hg0UD6ARUTs
+          MONGODB_URI: mongodb+srv://eldrishramosperez:mzs5uktZPNI5ZFhD@shrinebuilder.4ncfvnm.mongodb.net/
+          POKEMON_TCGAPI_KEY: e54c0f14-9794-4ef7-a160-47fe7194bd35
+        run: npm run build
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: v22.x
+
+      - name: Build Node assets
+        env:
+          CI: true
+          JWT_SECRET: Iz6FFbW.OU^.HNGHmUvsW8hg0UD6ARUTs
+          MONGODB_URI: mongodb+srv://eldrishramosperez:mzs5uktZPNI5ZFhD@shrinebuilder.4ncfvnm.mongodb.net/
+          POKEMON_TCGAPI_KEY: e54c0f14-9794-4ef7-a160-47fe7194bd35
+          SITE_URL: ${{ inputs.site-url }}
+        run: node server/index.js
+
+# Please do not touch the following action
+      - name: Store deployment content
+        uses: ionos-deploy-now/artifact-action@v1
+        with:
+          api-key: ${{ secrets.IONOS_API_KEY }}
+          service-host: api-us.ionos.space
+          project-id: 0635527e-b792-46fb-8c9c-8d57bd258937
+          branch-id: ${{ inputs.branch-id }}
+          version: ${{ github.sha }}
+          folder: ${{ env.DEPLOYMENT_FOLDER }}
+          config-file: .deploy-now/pokeport/config.yaml
+          action: upload
