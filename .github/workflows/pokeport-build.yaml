@@ -52,7 +52,7 @@ jobs:
         with:
           api-key: ${{ secrets.IONOS_API_KEY }}
           service-host: api-us.ionos.space
-          project-id: 0635527e-b792-46fb-8c9c-8d57bd258937
+          project-id: c27592f1-e993-44d6-a9d8-a0e2d7bb60b3
           branch-id: ${{ inputs.branch-id }}
           version: ${{ github.sha }}
           folder: pokeport
