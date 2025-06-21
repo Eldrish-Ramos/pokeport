@@ -15,8 +15,12 @@ import { ThemeProvider } from './contexts/ThemeContext'
 
 //uncheck when trying Render
 
+// const httpLink = createHttpLink({
+//   uri: 'https://pokeport.onrender.com/graphql',
+// })
+
 const httpLink = createHttpLink({
-  uri: 'https://pokeport.onrender.com/graphql',
+  uri: '/graphql', // or the full IONOS Deploy Now URL if needed
 })
 
 const authLink = setContext((_, { headers }) => {
