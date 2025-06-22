@@ -147,7 +147,7 @@ export default function Navbar() {
                     onMouseEnter={() => setShowThemeSubmenu(true)}
                     onMouseLeave={() => setShowThemeSubmenu(false)}
                   >
-                    Themes &raquo;
+                   &laquo; Themes
                     {showThemeSubmenu && (
                       <ul className="dropdown-menu show" style={submenuStyle}>
                         {Object.keys(TYPE_COLORS).map(type => (
