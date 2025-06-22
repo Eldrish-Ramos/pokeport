@@ -28,7 +28,7 @@ export default function Login() {
     e.preventDefault()
     try {
       const { data } = await login({ variables: form })
-      localStorage.setItem('token', data.login.token)
+      sessionStorage.setItem('token', data.login.token)
       window.dispatchEvent(new Event('authchange'))
       setTheme(data.login.theme || 'default') // Apply user's theme immediately
       setSuccess(true)

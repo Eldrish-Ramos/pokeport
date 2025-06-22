@@ -10,8 +10,8 @@ export default function Navbar() {
   const { setTheme } = useTheme() // <-- import setTheme from context
 
   useEffect(() => {
-    setIsLoggedIn(!!localStorage.getItem('token'))
-    const handler = () => setIsLoggedIn(!!localStorage.getItem('token'))
+    setIsLoggedIn(!!sessionStorage.getItem('token'))
+    const handler = () => setIsLoggedIn(!!sessionStorage.getItem('token'))
     window.addEventListener('authchange', handler)
     window.addEventListener('storage', handler)
     return () => {
@@ -21,7 +21,7 @@ export default function Navbar() {
   }, [])
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
+    sessionStorage.removeItem('token')
     window.dispatchEvent(new Event('authchange'))
     setIsLoggedIn(false)
     setTheme('default') // <-- Reset theme to default on logout

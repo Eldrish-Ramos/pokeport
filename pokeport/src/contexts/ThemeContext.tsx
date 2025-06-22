@@ -37,7 +37,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setThemeState(t)
     localStorage.setItem('theme', t)
     document.body.setAttribute('data-theme', t)
-    const token = localStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
     if (token) {
       client.mutate({ mutation: SET_THEME_MUTATION, variables: { theme: t } }).catch(() => {})
     }
