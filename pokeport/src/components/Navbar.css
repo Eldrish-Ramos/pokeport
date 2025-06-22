@@ -36,3 +36,26 @@
 .pk-links a:hover {
   color: var(--theme-accent2);
 }
+.dropdown-menu.show {
+  display: block;
+  background: #232323;
+  color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px #0005;
+  border: 1px solid #333;
+  padding: 0.3em 0;
+  min-width: 180px;
+}
+.dropdown-item {
+  color: #fff;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 0.5em 1.2em;
+  cursor: pointer;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+  background: #333;
+  color: #ffd700;
+}
