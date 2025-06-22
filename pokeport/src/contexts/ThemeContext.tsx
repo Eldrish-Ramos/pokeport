@@ -32,6 +32,19 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     document.body.setAttribute('data-theme', theme)
   }, [theme])
 
+  // Listen for logout and reset theme if not logged in
+  useEffect(() => {
+    const handler = () => {
+      if (!sessionStorage.getItem('token')) {
+        setThemeState('default')
+        localStorage.setItem('theme', 'default')
+        document.body.setAttribute('data-theme', 'default')
+      }
+    }
+    window.addEventListener('authchange', handler)
+    return () => window.removeEventListener('authchange', handler)
+  }, [])
+
   // Save theme to backend if logged in
   const saveTheme = (t: string) => {
     setThemeState(t)
