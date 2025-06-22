@@ -243,17 +243,20 @@
   box-shadow: 0 4px 16px #0007;
 }
 
+.plus-icon,
 .minus-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  font-size: 1.1em;
+  font-size: 1em;      /* Slightly larger for better centering */
   font-weight: 900;
   text-shadow: 0 2px 8px #0006;
   pointer-events: none;
-  line-height: 1;
+  line-height: 1;        /* Ensures vertical centering */
+  margin: 0;
+  padding: 0;
 }
 
 @media (max-width: 991.98px) {
