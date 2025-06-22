@@ -53,6 +53,7 @@ app.use(express.static(clientBuildPath, {
 
 // SPA fallback: serve index.html for all other GET requests
 app.get('*', (req, res) => {
+  console.log('SPA fallback hit for:', req.url)
   res.sendFile(path.join(clientBuildPath, 'index.html'));
 });
 
