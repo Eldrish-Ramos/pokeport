@@ -131,9 +131,9 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div className="d-flex justify-content-center mt-4">
+        {/* <div className="d-flex justify-content-center mt-4">
           <button className="btn btn-dark btn-lg px-5">View All Card Sets</button>
-        </div>
+        </div> */}
       </section>
     </div>
   )
