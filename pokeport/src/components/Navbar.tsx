@@ -28,10 +28,18 @@ export default function Navbar() {
     navigate('/')
   }
 
+  function closeNavbar() {
+    const navbar = document.getElementById('mainNav');
+    if (navbar && navbar.classList.contains('show')) {
+      // @ts-ignore
+      window.bootstrap?.Collapse.getOrCreateInstance(navbar).hide();
+    }
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-black py-2">
       <div className="container-fluid">
-        <Link className="navbar-brand d-flex align-items-center" to="/">
+        <Link className="navbar-brand d-flex align-items-center" to="/" onClick={closeNavbar}>
           <img
             src={pokeball}
             alt="Pokeball"
@@ -45,23 +53,23 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="mainNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item mx-2">
-              <Link className="nav-link" to="/">Home</Link>
+              <Link className="nav-link" to="/" onClick={closeNavbar}>Home</Link>
             </li>
             <li className="nav-item mx-2">
-              <Link className="nav-link" to="/sets">Card Sets</Link>
+              <Link className="nav-link" to="/sets" onClick={closeNavbar}>Card Sets</Link>
             </li>
             <li className="nav-item mx-2">
-              <Link className="nav-link" to="/themes">Themes</Link>
+              <Link className="nav-link" to="/themes" onClick={closeNavbar}>Themes</Link>
             </li>
             <li className="nav-item mx-2">
-              <Link className="nav-link" to="/collection">Collection</Link>
+              <Link className="nav-link" to="/collection" onClick={closeNavbar}>Collection</Link>
             </li>
           </ul>
           {isLoggedIn ? (
             <button
               className="btn btn-outline-light btn-sm px-4"
               type="button"
-              onClick={handleLogout}
+              onClick={() => { closeNavbar(); handleLogout(); }}
             >
               Logout
             </button>
@@ -69,7 +77,7 @@ export default function Navbar() {
             <button
               className="btn btn-danger btn-sm px-4"
               type="button"
-              onClick={() => navigate('/login')}
+              onClick={() => { closeNavbar(); navigate('/login'); }}
             >
               Sign In
             </button>
