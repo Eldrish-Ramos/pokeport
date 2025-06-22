@@ -16,8 +16,12 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 //uncheck when trying Render
 
+// const httpLink = createHttpLink({
+//   uri: 'https://pokeport.onrender.com/graphql',
+// })
+
 const httpLink = createHttpLink({
-  uri: 'https://pokeport.onrender.com/graphql',
+  uri: '/graphql',
 })
 
 const authLink = setContext((_, { headers }) => {
