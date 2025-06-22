@@ -287,4 +287,7 @@
     min-width: 0;
     box-sizing: border-box;
   }
+  .collection-bg {
+    flex-direction: column;
+  }
 }
