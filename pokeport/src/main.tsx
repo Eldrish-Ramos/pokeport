@@ -6,6 +6,7 @@ import { setContext } from '@apollo/client/link/context'
 import App from './App'
 import './index.css'
 import { ThemeProvider } from './contexts/ThemeContext'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 
 // uncheck when doing local
