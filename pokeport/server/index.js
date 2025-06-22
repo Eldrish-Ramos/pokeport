@@ -56,6 +56,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(clientBuildPath, 'index.html'));
 });
 
-app.listen({ port: 4000 }, () =>
-  console.log('Server ready at http://localhost:4000' + server.graphqlPath)
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () =>
+  console.log('Server ready at http://localhost:' + PORT + server.graphqlPath)
 )
