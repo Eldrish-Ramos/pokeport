@@ -46,13 +46,15 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const clientBuildPath = path.join(__dirname, '../dist')
 
-// Serve static files from the Vite build
-app.use(express.static(clientBuildPath))
+// Serve static files from the Vite build, but NOT index.html
+app.use(express.static(clientBuildPath, {
+  index: false
+}));
 
-// Serve index.html for all non-API routes (SPA fallback)
+// SPA fallback: serve index.html for all other GET requests
 app.get('*', (req, res) => {
-  res.sendFile(path.join(clientBuildPath, 'index.html'))
-})
+  res.sendFile(path.join(clientBuildPath, 'index.html'));
+});
 
 app.listen({ port: 4000 }, () =>
   console.log('Server ready at http://localhost:4000' + server.graphqlPath)
