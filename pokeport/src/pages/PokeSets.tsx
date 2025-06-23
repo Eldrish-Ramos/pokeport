@@ -84,7 +84,7 @@ export default function PokeSets() {
   const [cards, setCards] = useState<Card[]>([])
   const [sortOrder, setSortOrder] = useState<SortOrder>('none')
   const [searchCards, setSearchCards] = useState<Card[] | null>(null)
-  const [searchLoading, setSearchLoading] = useState(false)
+  // const [searchLoading, setSearchLoading] = useState(false)
   const [setSelectValue, setSetSelectValue] = useState<{ value: string; label: string } | null>(null)
   const [showToast, setShowToast] = useState(false)
   const [showAll, setShowAll] = useState(true)
