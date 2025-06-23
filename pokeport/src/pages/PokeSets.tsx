@@ -84,7 +84,8 @@ export default function PokeSets() {
   const [cards, setCards] = useState<Card[]>([])
   const [sortOrder, setSortOrder] = useState<SortOrder>('none')
   const [searchCards, setSearchCards] = useState<Card[] | null>(null)
-  // const [searchLoading, setSearchLoading] = useState(false)
+  const [searchLoading, setSearchLoading] = useState(false)
+  const [searchError, setSearchError] = useState<string | null>(null)
   const [setSelectValue, setSetSelectValue] = useState<{ value: string; label: string } | null>(null)
   const [showToast, setShowToast] = useState(false)
   const [showAll, setShowAll] = useState(true)
@@ -151,6 +152,7 @@ export default function PokeSets() {
     }
     setSetSelectValue(option)
     setSearchCards(null)
+    setSearchError(null)
   }
 
   // Helper to get the price for sorting
@@ -182,6 +184,74 @@ export default function PokeSets() {
     })
   }
 
+  // --- SEARCH BAR LOGIC ---
+  // Load options for AsyncSelect (live search)
+  const loadPokemonOptions = async (inputValue: string) => {
+    if (!inputValue || inputValue.length < 1) {
+      return []
+    }
+    setSearchError(null)
+    setSearchLoading(true)
+    try {
+      const res = await fetch(
+        `https://api.pokemontcg.io/v2/cards?q=name:${encodeURIComponent(inputValue)}*&pageSize=10`,
+        {
+          headers: {
+            'X-Api-Key': API_KEY,
+          },
+        }
+      )
+      const data = await res.json()
+      // Remove duplicates by name (for autoguess)
+      const seen = new Set<string>()
+      const options = data.data
+        .filter((card: Card) => {
+          if (seen.has(card.name)) return false
+          seen.add(card.name)
+          return true
+        })
+        .map((card: Card) => ({
+          value: card.name,
+          label: card.name,
+        }))
+      return options
+    } catch (e) {
+      setSearchError('Failed to load suggestions')
+      return []
+    } finally {
+      setSearchLoading(false)
+    }
+  }
+
+  // When a pokemon is selected, fetch all cards with that name
+  const handlePokemonSearch = async (option: { value: string; label: string } | null) => {
+    if (!option) {
+      setSearchCards(null)
+      setSearchError(null)
+      return
+    }
+    setSearchLoading(true)
+    setSearchError(null)
+    setSelectedSet(null)
+    setSetSelectValue(null)
+    try {
+      const res = await fetch(
+        `https://api.pokemontcg.io/v2/cards?q=name:"${encodeURIComponent(option.value)}"&pageSize=250`,
+        {
+          headers: {
+            'X-Api-Key': API_KEY,
+          },
+        }
+      )
+      const data = await res.json()
+      setSearchCards(data.data)
+    } catch (e) {
+      setSearchError('Failed to fetch cards for this Pokémon')
+      setSearchCards([])
+    } finally {
+      setSearchLoading(false)
+    }
+  }
   const cardsToDisplay = searchCards ?? sortedCards
 
   const isLoggedIn = !!meData?.me
