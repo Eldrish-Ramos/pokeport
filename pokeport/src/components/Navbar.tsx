@@ -4,7 +4,7 @@ import pokeball from '../assets/pokeball.png'
 import { useEffect, useState, useRef } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
 import { FaCog } from 'react-icons/fa'
-import { TYPE_COLORS, TYPE_ICONS } from '../constants/themes'
+import { TYPE_COLORS } from '../constants/themes'
 import './Navbar.css'
 
 export default function Navbar() {
