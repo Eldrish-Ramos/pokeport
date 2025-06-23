@@ -221,12 +221,19 @@ body {
 }
 
 .pokesets-set-banner-logo {
-  width: 10em;
-  height: 5em;
-  flex-shrink: 0;
+  width: min(90vw, 420px) !important;
+  height: auto !important;
+  max-height: 180px !important;
+  display: block;
+  margin: 0 auto;
   object-fit: contain;
-  border-radius: 0.5em;
-  box-shadow: 0 1px 6px #0002;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
 }
 
 .pokesets-set-banner-icon {
@@ -444,4 +451,38 @@ body {
 
 .radio-label input[type="radio"]:checked + .custom-radio:after {
   opacity: 1;
+}
+
+.card-zoom-overlay {
+  position: fixed;
+  z-index: 20000;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(20, 20, 20, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  transition: background 0.2s;
+  padding: 0;
+}
+.card-zoom-img {
+  max-width: 95vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  border-radius: 1.2em;
+  box-shadow: 0 8px 48px #000b, 0 1.5px 6px #0006;
+  background: transparent;
+  cursor: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+  transition: box-shadow 0.2s;
+}
+@media (max-width: 600px) {
+  .card-zoom-img {
+    max-width: 98vw;
+    max-height: 70vh;
+    border-radius: 0.7em;
+  }
 }

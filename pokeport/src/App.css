@@ -238,18 +238,18 @@ body[data-theme='Fairy'] {
 }
 
 body[data-theme='Colorless'] {
-  --theme-bg: #e6e6e6;
-  --theme-card-bg: #fff;
-  --theme-accent: #A8A77A;
-  --theme-accent2: #fffbe0;
-  --theme-accent3: #f7f7f7;
-  --theme-btn: #A8A77A;
+  --theme-bg: #f5f6fa;
+  --theme-card-bg: #ffffff;
+  --theme-accent: #b0b4ba;
+  --theme-accent2: #6c7a89;
+  --theme-accent3: #e9ecef;
+  --theme-btn: #b0b4ba;
   --theme-btn-text: #222;
-  --theme-border: #A8A77A;
+  --theme-border: #b0b4ba;
   --theme-text: #222;
   --theme-accent-text: #222;
-  --theme-add-btn: linear-gradient(135deg, #fffbe0 60%, #A8A77A 100%);
-  --theme-add-btn-hover: linear-gradient(135deg, #A8A77A 60%, #fffbe0 100%);
+  --theme-add-btn: linear-gradient(135deg, #e9ecef 60%, #b0b4ba 100%);
+  --theme-add-btn-hover: linear-gradient(135deg, #b0b4ba 60%, #e9ecef 100%);
 }
 
 body[data-theme='Dragon'] {

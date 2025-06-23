@@ -90,6 +90,7 @@ export default function PokeSets() {
   const [setSelectValue, setSetSelectValue] = useState<{ value: string; label: string } | null>(null)
   const [showToast, setShowToast] = useState(false)
   const [showAll, setShowAll] = useState(true)
+  const [zoomedCardId, setZoomedCardId] = useState<string | null>(null)
   const toastTimeout = useRef<NodeJS.Timeout | null>(null)
 
   const { data: meData } = useQuery(ME_QUERY)
@@ -274,6 +275,24 @@ export default function PokeSets() {
         !isCardInCollection(card.id, card.set?.id || '')
       )
 
+  // Close zoom on scroll
+  useEffect(() => {
+    if (!zoomedCardId) return
+    const handleScroll = () => setZoomedCardId(null)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [zoomedCardId])
+
+  // Close zoom on Escape key
+  useEffect(() => {
+    if (!zoomedCardId) return
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setZoomedCardId(null)
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [zoomedCardId])
+
   return (
     <div className="pokesets-bg d-flex min-vh-100">
       {/* Sidebar */}
@@ -363,46 +382,31 @@ export default function PokeSets() {
       </aside>
       {/* Main content */}
       <main className="pokesets-main flex-grow-1 d-flex flex-column">
-        <div className="pokesets-set-banner card shadow-sm border-0 mb-4 d-flex flex-row align-items-center justify-content-center px-4 py-4 flex-wrap">
+        <div className="pokesets-set-banner card shadow-sm border-0 mb-4 d-flex flex-row align-items-center justify-content-center px-4 py-4 flex-wrap" style={{ minHeight: '180px' }}>
           {/* Only show logo if a set is selected AND not searching */}
           {selectedSet && selectedSet.images?.logo && !searchCards ? (
             <img
               src={selectedSet.images.logo}
               alt={`${selectedSet.name} logo`}
-              className="pokesets-set-banner-logo me-3"
+              className="pokesets-set-banner-logo"
+              style={{
+                width: 'min(90vw, 420px)',
+                height: 'auto',
+                maxHeight: '180px',
+                display: 'block',
+                margin: '0 auto',
+                objectFit: 'contain',
+                background: 'transparent',
+                boxShadow: 'none',
+                border: 'none',
+                borderRadius: 0,
+                padding: 0,
+              }}
             />
-          ) : null}
-          <div className="text-center w-100">
-            <div className="pokesets-set-banner-title fw-bold">
-              {selectedSet
-                ? <>Cards in <span className="text-danger">"{selectedSet.name}"</span></>
-                : <>Select a set to view cards</>
-              }
-            </div>
-            <div className="pokesets-set-banner-search mt-3 d-flex justify-content-center">
-              <div style={{ minWidth: 260, maxWidth: 400, width: '100%' }}>
-                <AsyncSelect
-                  cacheOptions
-                  loadOptions={loadPokemonOptions}
-                  defaultOptions={false}
-                  placeholder="Search for a Pokémon..."
-                  onChange={handlePokemonSearch}
-                  isClearable
-                  isLoading={searchLoading}
-                  classNamePrefix="pokesets-select"
-                  styles={{
-                    menu: base => ({
-                      ...base,
-                      zIndex: 9999
-                    })
-                  }}
-                />
-              </div>
-            </div>
-            {searchError && (
-              <div className="text-danger mt-2" style={{ fontSize: '0.97em' }}>{searchError}</div>
-            )}
-          </div>
+          ) : (
+            // Optionally, show nothing or a placeholder when no set is selected
+            null
+          )}
         </div>
         {searchLoading && <div className="text-secondary mb-3">Loading cards...</div>}
         {!searchLoading && cardsToDisplay.length === 0 && (selectedSet || searchCards) && (
@@ -454,6 +458,8 @@ export default function PokeSets() {
                       src={card.images.large || card.images.small}
                       alt={card.name}
                       className="pokesets-card-img"
+                      style={{ cursor: 'zoom-in' }}
+                      onClick={() => setZoomedCardId(card.id)}
                     />
                   </div>
                   <div className="text-center mt-2 pokesets-card-title">
@@ -485,6 +491,25 @@ export default function PokeSets() {
             )
           })}
         </div>
+
+        {/* Zoomed card overlay (outside the grid) */}
+        {zoomedCardId && (() => {
+          const zoomedCard = filteredCards.find(card => card.id === zoomedCardId)
+          if (!zoomedCard) return null
+          return (
+            <div
+              className="card-zoom-overlay"
+              onClick={() => setZoomedCardId(null)}
+            >
+              <img
+                src={zoomedCard.images.large || zoomedCard.images.small}
+                alt={zoomedCard.name}
+                className="card-zoom-img"
+                onClick={e => e.stopPropagation()}
+              />
+            </div>
+          )
+        })()}
       </main>
     </div>
   )

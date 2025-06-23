@@ -81,6 +81,17 @@ export default function Navbar() {
     border: '1px solid #333',
   }
 
+  // Add a state to detect mobile
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 992)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-black py-2" style={{ position: 'relative' }}>
       <div className="container-fluid">
@@ -107,11 +118,13 @@ export default function Navbar() {
               <Link className="nav-link" to="/collection" onClick={closeNavbar}>Collection</Link>
             </li>
           </ul>
-          <div className="d-flex align-items-center position-relative" style={{ marginRight: '1em' }}>
+          {/* Mobile/desktop wrapper */}
+          <div className={isMobile ? "navbar-mobile-actions w-100 d-flex flex-column align-items-center mt-3" : "d-flex align-items-center position-relative"} style={isMobile ? {} : { marginRight: '1em' }}>
             {/* Cogwheel Dropdown */}
             <div
               ref={dropdownRef}
-              style={{ position: 'relative' }}
+              style={{ position: 'relative', width: isMobile ? '100%' : undefined }}
+              className={isMobile ? "w-100" : ""}
             >
               <button
                 className="theme-cog-btn"
@@ -131,8 +144,11 @@ export default function Navbar() {
                   fontSize: '1.1em',
                   color: 'var(--theme-accent2)',
                   outline: 'none',
-                  marginRight: '0.5em',
+                  marginRight: isMobile ? 0 : '0.5em',
+                  marginBottom: isMobile ? '1em' : 0,
                   cursor: 'pointer',
+                  width: isMobile ? 48 : undefined,
+                  height: isMobile ? 48 : undefined,
                 }}
                 onBlur={() => setShowDropdown(false)}
                 title="Theme settings"
@@ -140,16 +156,52 @@ export default function Navbar() {
                 <FaCog />
               </button>
               {showDropdown && (
-                <ul className="dropdown-menu show" style={dropdownStyle}>
+                <ul
+                  className="dropdown-menu show"
+                  style={{
+                    ...dropdownStyle,
+                    ...(isMobile
+                      ? {
+                          position: 'fixed',
+                          left: 0,
+                          right: 0,
+                          top: 70,
+                          minWidth: 'unset',
+                          width: '90vw',
+                          margin: '0 auto',
+                          borderRadius: 12,
+                          zIndex: 9999,
+                        }
+                      : {}),
+                  }}
+                >
                   <li
                     className="dropdown-item"
-                    style={{ cursor: 'pointer', position: 'relative' }}
-                    onMouseEnter={() => setShowThemeSubmenu(true)}
-                    onMouseLeave={() => setShowThemeSubmenu(false)}
+                    style={{ cursor: 'pointer', position: 'relative', width: isMobile ? '100%' : undefined }}
+                    onMouseEnter={() => !isMobile && setShowThemeSubmenu(true)}
+                    onMouseLeave={() => !isMobile && setShowThemeSubmenu(false)}
+                    onClick={() => isMobile && setShowThemeSubmenu(v => !v)}
                   >
-                   &laquo; Themes
-                    {showThemeSubmenu && (
-                      <ul className="dropdown-menu show" style={submenuStyle}>
+                    &laquo; Themes
+                    {/* Desktop: submenu on hover; Mobile: show options inline when toggled */}
+                    {(showThemeSubmenu || isMobile) && (
+                      <ul
+                        className="dropdown-menu show"
+                        style={{
+                          ...submenuStyle,
+                          ...(isMobile
+                            ? {
+                                position: 'static',
+                                minWidth: 'unset',
+                                width: '100%',
+                                boxShadow: 'none',
+                                border: 'none',
+                                background: 'transparent',
+                                marginTop: 8,
+                              }
+                            : {}),
+                        }}
+                      >
                         {Object.keys(TYPE_COLORS).map(type => (
                           <li key={type}>
                             <button
@@ -158,25 +210,14 @@ export default function Navbar() {
                                 color: TYPE_COLORS[type],
                                 fontWeight: theme === type ? 'bold' : undefined,
                                 background: theme === type ? '#222' : undefined,
+                                width: isMobile ? '100%' : undefined,
                               }}
                               onMouseDown={() => {
                                 saveTheme(type)
-                                // Optionally keep dropdown open after selection, or close:
-                                // setShowDropdown(false)
+                                setShowDropdown(false)
                                 setShowThemeSubmenu(false)
                               }}
                             >
-                              <img
-                                src={TYPE_ICONS[type] || '/vite.svg'}
-                                alt={type}
-                                style={{
-                                  width: 24,
-                                  height: 24,
-                                  marginRight: 8,
-                                  background: TYPE_COLORS[type] + '22',
-                                  borderRadius: '50%',
-                                }}
-                              />
                               {type === 'default' ? 'Default (Red/Black)' : type}
                               {theme === type && (
                                 <span className="ms-auto badge bg-success">Selected</span>
@@ -194,6 +235,7 @@ export default function Navbar() {
               <button
                 className="btn btn-outline-light btn-sm px-4"
                 type="button"
+                style={isMobile ? { width: '100%' } : {}}
                 onClick={() => { closeNavbar(); handleLogout(); }}
               >
                 Logout
@@ -202,6 +244,7 @@ export default function Navbar() {
               <button
                 className="btn btn-danger btn-sm px-4"
                 type="button"
+                style={isMobile ? { width: '100%' } : {}}
                 onClick={() => { closeNavbar(); navigate('/login'); }}
               >
                 Sign In
