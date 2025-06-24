@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import Select from 'react-select'
+import AsyncSelect from 'react-select/async'
 import { Toast, ToastContainer } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './PokeSets.css'
@@ -314,6 +315,25 @@ export default function PokeSets() {
           </h4>
         </div>
         <div className="pokesets-sidebar-content flex-grow-1 d-flex flex-column">
+          <AsyncSelect
+            cacheOptions
+            loadOptions={loadPokemonOptions}
+            defaultOptions={false}
+            isClearable
+            isLoading={searchLoading}
+            placeholder="Search Pokémon by name..."
+            onChange={handlePokemonSearch}
+            classNamePrefix="pokesets-select"
+            styles={{
+              menu: (base: any) => ({ ...base, zIndex: 9999 }),
+              container: (base: any) => ({ ...base, marginBottom: '1.2em' }),
+            }}
+          />
+          {searchError && (
+            <div className="alert alert-danger py-1 px-2 my-2" style={{ fontSize: '0.97em' }}>
+              {searchError}
+            </div>
+          )}
           <Select
             id="set-select"
             isClearable
@@ -417,6 +437,11 @@ export default function PokeSets() {
         {searchLoading && <div className="text-secondary mb-3">Loading cards...</div>}
         {!searchLoading && cardsToDisplay.length === 0 && (selectedSet || searchCards) && (
           <div className="text-muted mb-3">No cards found for this search.</div>
+        )}
+        {searchError && (
+          <div className="alert alert-danger py-1 px-2 my-2" style={{ fontSize: '0.97em' }}>
+            {searchError}
+          </div>
         )}
         <ToastContainer
           position="top-center"
