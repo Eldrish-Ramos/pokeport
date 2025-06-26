@@ -617,7 +617,7 @@ export default function PokeSets() {
                   </div>
                   <div className="card-zoom-sidebar-detail">
                     <span className="sidebar-label">Artist:</span>
-                    <span>{zoomedCard['artist'] || 'Unknown'}</span>
+                    <span>{zoomedCard.artist || 'Unknown'}</span>
                   </div>
                   {zoomedCard.subtypes && zoomedCard.subtypes.length > 0 && (
                     <div className="card-zoom-sidebar-detail">
