@@ -15,6 +15,10 @@ export default {
   },
   Mutation: {
     register: async (_, { username, email, password }) => {
+      // Check if email is already used
+      const existing = await User.findOne({ email })
+      if (existing) throw new Error('Email already registered')
+
       const hashed = await bcrypt.hash(password, 10)
       const user = await User.create({ username, email, password: hashed })
       return { id: user._id, username: user.username, email: user.email, theme: user.theme }

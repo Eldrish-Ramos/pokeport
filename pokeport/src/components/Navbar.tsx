@@ -117,6 +117,9 @@ export default function Navbar() {
             <li className="nav-item mx-2">
               <Link className="nav-link" to="/collection" onClick={closeNavbar}>Collection</Link>
             </li>
+            <li className="nav-item mx-2">
+              <Link className="nav-link" to="/artists" onClick={closeNavbar}>Artists</Link>
+            </li>
           </ul>
           {/* Mobile/desktop wrapper */}
           <div className={isMobile ? "navbar-mobile-actions w-100 d-flex flex-column align-items-center mt-3" : "d-flex align-items-center position-relative"} style={isMobile ? {} : { marginRight: '1em' }}>

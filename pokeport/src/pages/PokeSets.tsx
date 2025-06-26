@@ -531,13 +531,122 @@ export default function PokeSets() {
             <div
               className="card-zoom-overlay"
               onClick={() => setZoomedCardId(null)}
+              style={{ zIndex: 20000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              <img
-                src={zoomedCard.images.large || zoomedCard.images.small}
-                alt={zoomedCard.name}
-                className="card-zoom-img"
+              <div
+                className="card-zoom-modal"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  background: 'transparent',
+                  maxWidth: '1200px',
+                  maxHeight: '92vh',
+                  width: '98vw',
+                  padding: '2vw',
+                }}
                 onClick={e => e.stopPropagation()}
-              />
+              >
+                <img
+                  src={zoomedCard.images.large || zoomedCard.images.small}
+                  alt={zoomedCard.name}
+                  className="card-zoom-img"
+                  style={{
+                    maxWidth: '420px',
+                    maxHeight: '85vh',
+                    borderRadius: '1.5em',
+                    marginRight: '3vw',
+                    background: 'transparent',
+                    boxShadow: '0 8px 48px #000b, 0 1.5px 6px #0006',
+                    border: '4px solid var(--theme-accent2)',
+                    transition: 'box-shadow 0.2s, border 0.2s',
+                  }}
+                />
+                <aside
+                  className="card-zoom-sidebar"
+                  style={{
+                    background: 'var(--theme-card-bg)',
+                    color: 'var(--theme-text)',
+                    borderRadius: '1.5em',
+                    boxShadow: '0 8px 32px #000a',
+                    minWidth: '320px',
+                    maxWidth: '420px',
+                    padding: '2.5em 2em 2.5em 2em',
+                    marginLeft: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1.5em',
+                    zIndex: 20001,
+                    borderLeft: '10px solid var(--theme-accent)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div className="card-zoom-sidebar-header" style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1em',
+                    marginBottom: '1em'
+                  }}>
+                    {zoomedCard.set?.images?.symbol && (
+                      <img
+                        src={zoomedCard.set.images.symbol}
+                        alt="Set symbol"
+                        style={{
+                          width: 48,
+                          height: 48,
+                          background: 'var(--theme-accent3)',
+                          borderRadius: '50%',
+                          border: '3px solid var(--theme-accent2)',
+                          boxShadow: '0 2px 8px #0003',
+                        }}
+                      />
+                    )}
+                    <h3 style={{
+                      fontWeight: 900,
+                      fontSize: '1.5em',
+                      margin: 0,
+                      color: 'var(--theme-accent)',
+                      letterSpacing: '1px',
+                      textShadow: '0 2px 8px #0008'
+                    }}>{zoomedCard.name}</h3>
+                  </div>
+                  <div className="card-zoom-sidebar-detail">
+                    <span className="sidebar-label">Set:</span>
+                    <span>{zoomedCard.set?.name || 'Unknown'}</span>
+                  </div>
+                  <div className="card-zoom-sidebar-detail">
+                    <span className="sidebar-label">Artist:</span>
+                    <span>{zoomedCard['artist'] || 'Unknown'}</span>
+                  </div>
+                  {zoomedCard.subtypes && zoomedCard.subtypes.length > 0 && (
+                    <div className="card-zoom-sidebar-detail">
+                      <span className="sidebar-label">Subtypes:</span>
+                      <span>{zoomedCard.subtypes.join(', ')}</span>
+                    </div>
+                  )}
+                  <button
+                    className="btn btn-danger mt-3"
+                    onClick={() => setZoomedCardId(null)}
+                    style={{
+                      alignSelf: 'flex-end',
+                      borderRadius: '2em',
+                      fontWeight: 700,
+                      letterSpacing: '0.5px',
+                      padding: '0.6em 2em',
+                      background: 'var(--theme-accent)',
+                      color: 'var(--theme-accent-text, #fff)',
+                      border: 'none',
+                      boxShadow: '0 2px 8px #0004',
+                      marginTop: 'auto',
+                      fontSize: '1.15em',
+                    }}
+                  >
+                    Close
+                  </button>
+                  <div className="sidebar-bg-accent" />
+                </aside>
+              </div>
             </div>
           )
         })()}

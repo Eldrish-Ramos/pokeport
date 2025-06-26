@@ -1,0 +1,63 @@
+.artist-bg {
+  background: var(--theme-bg);
+  color: var(--theme-text);
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.artist-info-card {
+  background: var(--theme-card-bg);
+  border-radius: 1.2rem;
+  color: var(--theme-text);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.10);
+  align-items: center;
+  margin-bottom: 2em;
+}
+
+.artist-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 32px;
+  border: 4px solid var(--theme-accent2);
+  box-shadow: 0 2px 12px #0004;
+  background: var(--theme-accent3);
+}
+
+.card-zoom-overlay {
+  position: fixed;
+  z-index: 20000;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(20, 20, 20, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  transition: background 0.2s;
+  padding: 0;
+}
+.card-zoom-img {
+  max-width: 420px !important;
+  max-height: 85vh !important;
+  width: auto;
+  height: auto;
+  border-radius: 1.5em !important;
+  border: 4px solid var(--theme-accent2);
+  box-shadow: 0 8px 48px #000b, 0 1.5px 6px #0006;
+  background: transparent;
+  transition: box-shadow 0.2s, border 0.2s;
+}
+
+@media (max-width: 600px) {
+  .artist-info-card {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center;
+    padding: 1.5em 0.5em;
+  }
+  .artist-photo {
+    margin-right: 0;
+    margin-bottom: 1em;
+  }
+}

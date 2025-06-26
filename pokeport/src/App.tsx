@@ -8,6 +8,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Themes from './pages/Themes'
 import Collection from './pages/Collection'
+import Artist from './pages/Artist'
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="/collection" element={<Collection />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/artists" element={<Artist />} />
         </Routes>
       </div>
       <Footer />
