@@ -45,6 +45,7 @@ type Card = {
       logo: string
     }
   }
+  artist?: string // <-- Add this line
 }
 
 type SortOrder = 'none' | 'asc' | 'desc'
