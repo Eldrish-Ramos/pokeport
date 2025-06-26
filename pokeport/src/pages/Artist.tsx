@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import AsyncSelect from 'react-select/async'
 import './Artist.css'
 import './Collection.css'
-import { Card } from './PokeSets'
 import pokeball from '../assets/pokeball.png'
 
 const ARTIST_INFO: Record<string, { image: string; bio: string }> = {
@@ -19,16 +18,30 @@ const ARTIST_INFO: Record<string, { image: string; bio: string }> = {
 
 const API_KEY = import.meta.env.VITE_POKEMONTCG_API_KEY
 
+type Card = {
+  id: string
+  name: string
+  images: { small: string; large: string }
+  set?: {
+    name: string
+    id: string
+    images?: { symbol: string; logo: string }
+  }
+  artist?: string
+  subtypes?: string[]
+  [key: string]: any
+}
+
 type ArtistOption = { value: string; label: string }
 type CardType = Card
 
 export default function Artist() {
   const [artistOptions, setArtistOptions] = useState<ArtistOption[]>([])
   const [selectedArtist, setSelectedArtist] = useState<ArtistOption | null>(null)
-  const [artistCards, setArtistCards] = useState<CardType[]>([])
+  const [artistCards, setArtistCards] = useState<Card[]>([])
   const [loadingCards, setLoadingCards] = useState(false)
   const [searchError, setSearchError] = useState<string | null>(null)
-  const [zoomedCard, setZoomedCard] = useState<CardType | null>(null)
+  const [zoomedCard, setZoomedCard] = useState<Card | null>(null)
 
   // Fetch all unique artists for autocomplete
   const loadArtistOptions = async (inputValue: string) => {
@@ -42,15 +55,15 @@ export default function Artist() {
       const data = await res.json()
       const seen = new Set<string>()
       const options = data.data
-        .filter((card: CardType) => {
-          if (!card['artist']) return false
-          if (seen.has(card['artist'])) return false
-          seen.add(card['artist'])
+        .filter((card: Card) => {
+          if (!card.artist) return false
+          if (seen.has(card.artist)) return false
+          seen.add(card.artist)
           return true
         })
-        .map((card: CardType) => ({
-          value: card['artist'],
-          label: card['artist'],
+        .map((card: Card) => ({
+          value: card.artist,
+          label: card.artist,
         }))
       return options
     } catch {
@@ -91,15 +104,15 @@ export default function Artist() {
       const data = await res.json()
       const seen = new Set<string>()
       const options = data.data
-        .filter((card: CardType) => {
-          if (!card['artist']) return false
-          if (seen.has(card['artist'])) return false
-          seen.add(card['artist'])
+        .filter((card: Card) => {
+          if (!card.artist) return false
+          if (seen.has(card.artist)) return false
+          seen.add(card.artist)
           return true
         })
-        .map((card: CardType) => ({
-          value: card['artist'],
-          label: card['artist'],
+        .map((card: Card) => ({
+          value: card.artist,
+          label: card.artist,
         }))
       setArtistOptions(options)
     })()
